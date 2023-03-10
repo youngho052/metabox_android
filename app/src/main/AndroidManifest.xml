@@ -15,6 +15,11 @@
         android:theme="@style/Theme.Metabox"
         tools:targetApi="31">
         <activity
+            android:name=".MovieInfoActivity"
+            android:exported="false"
+            android:label="@string/title_activity_movie_info"
+            android:theme="@style/Theme.Metabox" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"

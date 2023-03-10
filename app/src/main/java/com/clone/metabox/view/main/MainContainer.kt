@@ -1,7 +1,7 @@
 package com.clone.metabox.view.main
 
-import androidx.compose.foundation.*
 import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,33 +11,52 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import com.skydoves.landscapist.glide.GlideImage
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainContainer () {
-
     GlideImage(
         imageModel = { "https://img.megabox.co.kr/static/mb/images/common/bg/bg-origin.png" },
         modifier = Modifier.fillMaxSize()
     )
 
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ){
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(20.dp)
-        ) {
+    LazyColumn() {
+        stickyHeader {
             MainHeader()
-            EventContainer()
-            MainContents()
+        }
+
+        item {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ){
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(20.dp)
+                ) {
+                    EventContainer()
+                    MainContents()
+                }
+            }
+        }
+    }
+
+    Box(
+        contentAlignment = Alignment.BottomCenter,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(55.dp)
+                .background(Color.White)
+                .border(1.dp, Color(0xFFE9E9E9))
+        ) {
+
         }
     }
 }
@@ -49,9 +68,10 @@ fun MainHeader () {
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .height(50.dp)
+            .height(55.dp)
+            .background(Color(0xFF120d3c))
     ) {
-        Text("header",color = Color.White)
+        Text("MetaBox",color = Color.White)
     }
 }
 
@@ -94,6 +114,16 @@ fun MainContents () {
             )
             .padding(top = 30.dp, start = 20.dp)
     ) {
+        SlideFeedView(
+            feedList = contentFeedList,
+            contentList = null
+        ) {}
+
+        SlideFeedView(
+            feedList = eventFeedList,
+            contentList = null
+        ) {}
+
         SlideFeedView(
             feedList = contentFeedList,
             contentList = null
