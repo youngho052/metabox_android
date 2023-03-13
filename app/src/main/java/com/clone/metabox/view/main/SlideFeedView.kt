@@ -25,20 +25,4 @@ fun SlideFeedView (
             Text(text = "${feedList!![it]}")
         }
     }
-
-    LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(15.dp),
-        contentPadding = PaddingValues(end = 20.dp)
-    ) {
-        items(count = 10) {
-            Box(
-                modifier = Modifier
-                    .width(150.dp)
-                    .height(300.dp)
-                    .border(1.dp, Color.Black, RoundedCornerShape(15.dp))
-            ) {
-
-            }
-        }
-    }
 }
