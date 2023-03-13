@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MainContainer(
-                // commit test
+                // commit test2
                 mainViewModel = mainViewModel,
             )
         }
