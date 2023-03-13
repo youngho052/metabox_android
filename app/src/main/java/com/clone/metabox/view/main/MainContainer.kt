@@ -106,7 +106,7 @@ fun EventContainer () {
                         shape = RoundedCornerShape(50.dp)
                     )
             ) {
-                Text(text = "test text", color = Color.White)
+                Text(text = "test text ", color = Color.White)
             }
         }
     }
