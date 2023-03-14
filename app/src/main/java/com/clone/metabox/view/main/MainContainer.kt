@@ -41,8 +41,12 @@ fun MainContainer (
 
         item {
             Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clickable {
+                        mainViewModel.navigateMovieInfo(context)
+                    },
             ) {
                 Column(
                     modifier = Modifier.fillMaxSize(),

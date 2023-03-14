@@ -3,6 +3,7 @@ package com.clone.metabox.view.main
 import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModel
+import com.clone.metabox.MovieInfoActivity
 import com.clone.metabox.MovieListActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -13,6 +14,12 @@ class MainViewModel @Inject constructor(
 ): ViewModel() {
     fun navigateMovieList (context: Context) {
         val intent = Intent(context, MovieListActivity::class.java)
+
+        context.startActivity(intent)
+    }
+
+    fun navigateMovieInfo (context: Context) {
+        val intent = Intent(context, MovieInfoActivity::class.java)
 
         context.startActivity(intent)
     }
