@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,6 +26,7 @@ import com.skydoves.landscapist.glide.GlideImage
 fun MainContainer (
     mainViewModel: MainViewModel
 ) {
+    val mainUiState = mainViewModel.mainUiState.collectAsState()
     val context = LocalContext.current
 
     GlideImage(
@@ -45,7 +47,7 @@ fun MainContainer (
                 modifier = Modifier
                     .fillMaxSize()
                     .clickable {
-                        mainViewModel.navigateMovieInfo(context)
+                        mainUiState.value.navigateMovieInfo(context)
                     },
             ) {
                 Column(
@@ -55,7 +57,7 @@ fun MainContainer (
                 ) {
                     EventContainer()
                     MainContents(
-                        navigateMovieList = { mainViewModel.navigateMovieList(context = context) }
+                        navigateMovieList = {  mainUiState.value.navigateMovieList(context) }
                     )
                 }
             }
