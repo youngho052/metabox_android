@@ -8,5 +8,17 @@ val Purple500 = Color(0xFF6200EE)
 val Purple700 = Color(0xFF3700B3)
 val Teal200 = Color(0xFF03DAC5)
 
+val Colors.LightBlack: Color
+    get() = Color(0xFF333333)
+
 val Colors.Gray: Color
     get() = Color(0xFF9899A8)
+
+val Colors.LightGray: Color
+    get() = Color(0xFF999999)
+
+val Colors.DarkGreen: Color
+    get() = Color(0xFF459515)
+
+val Colors.Purple: Color
+    get() = Color(0xFF8C4AC2)
