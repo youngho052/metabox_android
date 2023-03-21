@@ -26,13 +26,26 @@ import timber.log.Timber
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MovieInfoContainer() {
+    val configuration = LocalConfiguration.current
+
+    val screenHeight = configuration.screenHeightDp.dp
+
     LazyColumn() {
         stickyHeader {
             MovieInfoHeader()
         }
 
         item {
-            MovieInfoContents()
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color(0XFF150C1C))
+            ) {
+                MovieInfoContents()
+                Column(modifier = Modifier.height(100.dp)) {
+                    Text("dasdasdasad", color= Color.White)
+                }
+            }
         }
     }
 
@@ -63,7 +76,6 @@ fun MovieInfoContents () {
     Box(
         modifier = Modifier
             .height(screenHeight)
-            .background(Color(0XFF150C1C))
     ) {
         GlideImage(
             imageModel = { "https://img.megabox.co.kr/SharedImg/2023/02/06/7gFJhWRalgHSihiVTu9oOoKRXxMH5mKe_720.jpg" },
@@ -90,7 +102,9 @@ fun MovieInfoContents () {
             verticalArrangement = Arrangement.spacedBy(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .align(Alignment.Center)
+                .fillMaxWidth()
+                .fillMaxHeight(0.5f)
+                .align(Alignment.BottomCenter)
         ) {
             Text(
                 text = "스즈메의 문단속",
@@ -138,9 +152,9 @@ fun MovieInfoContents () {
                     )
                 }
             }
-        }
 
-//        MovieDescriptionBox()
+            MovieDescriptionBox()
+        }
     }
 }
 
@@ -153,6 +167,7 @@ fun MovieDescriptionBox () {
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 20.dp, start = 18.dp, end = 18.dp)
+            .border(1.dp, Color.Red)
     ) {
         Text(
             text = "'이 근처에 폐허 없니? 문을 찾고 있어'",
@@ -173,6 +188,30 @@ fun MovieDescriptionBox () {
         }
 
         if(moreClickAble.value) {
+            Column() {
+                Text(
+                    text = "'이 근처에 폐허 없니? 문을 찾고 있어'",
+                    color = MaterialTheme.colors.LightGray,
+                    fontSize = 15.sp,
+                )
+                Text(
+                    text = "'이 근처에 폐허 없니? 문을 찾고 있어'",
+                    color = MaterialTheme.colors.LightGray,
+                    fontSize = 15.sp,
+                )
+            }
+            Column() {
+                Text(
+                    text = "'이 근처에 폐허 없니? 문을 찾고 있어'",
+                    color = MaterialTheme.colors.LightGray,
+                    fontSize = 15.sp,
+                )
+                Text(
+                    text = "'이 근처에 폐허 없니? 문을 찾고 있어'",
+                    color = MaterialTheme.colors.LightGray,
+                    fontSize = 15.sp,
+                )
+            }
             Column() {
                 Text(
                     text = "'이 근처에 폐허 없니? 문을 찾고 있어'",

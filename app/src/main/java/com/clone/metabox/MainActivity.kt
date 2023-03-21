@@ -13,9 +13,9 @@ class MainActivity : ComponentActivity() {
     private val mainViewModel: MainViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             MainContainer(
-                // commit test3
                 mainViewModel = mainViewModel,
             )
         }

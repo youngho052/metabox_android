@@ -46,18 +46,16 @@ fun MainContainer (
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .fillMaxSize()
-                    .clickable {
-                        mainUiState.value.navigateMovieInfo(context)
-                    },
             ) {
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
-                    EventContainer()
+//                    EventContainer()
                     MainContents(
-                        navigateMovieList = {  mainUiState.value.navigateMovieList(context) }
+                        navigateMovieList = { mainUiState.value.navigateMovieList(context) },
+                        navigateMovieInfo = { mainUiState.value.navigateMovieInfo(context) }
                     )
                 }
             }
@@ -95,32 +93,9 @@ fun MainHeader () {
 }
 
 @Composable
-fun EventContainer () {
-    LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(20.dp),
-        contentPadding = PaddingValues(start = 20.dp, end = 20.dp)
-    ) {
-        items(count = 10) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .width(70.dp)
-                    .height(95.dp)
-                    .border(
-                        width = 1.dp,
-                        color = Color.White,
-                        shape = RoundedCornerShape(50.dp)
-                    )
-            ) {
-                Text(text = "test text", color = Color.White)
-            }
-        }
-    }
-}
-
-@Composable
 fun MainContents (
     navigateMovieList: () -> Unit,
+    navigateMovieInfo: () -> Unit,
 ) {
     val contentFeedList = listOf("#박스오피스", "#상영예정", "#돌비시네마", "단독", "클소", "#필소")
     val eventFeedList = listOf("메가Pick", "영화", "극장", "제휴/할인", "시사회/무대인사")
@@ -152,6 +127,9 @@ fun MainContents (
                             .width(150.dp)
                             .height(300.dp)
                             .border(1.dp, Color.Black, RoundedCornerShape(15.dp))
+                            .clickable {
+                                navigateMovieInfo()
+                            }
                     ) {
 
                     }
@@ -187,10 +165,8 @@ fun MainContents (
                                 color = MaterialTheme.colors.Gray
                             )
                         }
-
                     }
                 }
-
             }
         }
 
@@ -203,5 +179,29 @@ fun MainContents (
                     navigateMovieList()
                 }
         )
+    }
+}
+
+@Composable
+fun EventContainer () {
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(20.dp),
+        contentPadding = PaddingValues(start = 20.dp, end = 20.dp)
+    ) {
+        items(count = 10) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .width(70.dp)
+                    .height(95.dp)
+                    .border(
+                        width = 1.dp,
+                        color = Color.White,
+                        shape = RoundedCornerShape(50.dp)
+                    )
+            ) {
+                Text(text = "test text", color = Color.White)
+            }
+        }
     }
 }

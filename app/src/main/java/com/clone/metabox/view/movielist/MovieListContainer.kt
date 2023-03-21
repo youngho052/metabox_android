@@ -5,41 +5,46 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.clone.metabox.ui.theme.Gray
+import timber.log.Timber
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MovieListContainer() {
+fun MovieListContainer(
+    movieListViewModel: MovieListViewModel
+) {
+    val movieListUiState = movieListViewModel.movieListUiState.collectAsState()
+
+    val listState = rememberLazyListState()
+
     LazyColumn(
+        state = listState,
         verticalArrangement = Arrangement.spacedBy(25.dp)
     ) {
         stickyHeader {
             MovieListHeader()
         }
 
-//        itemsIndexed(
-//           20
-//        ) {
-//
-//        }
-
-        items(count = 20) {
+        items(count = movieListUiState.value.movieList.size) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(25.dp),
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(start = 20.dp, end = 20.dp)
             ) {
+                Text("number ${it+1}", color = Color.Red)
                 MovieListContents()
                 Box(modifier = Modifier
                     .fillMaxWidth()
@@ -48,6 +53,35 @@ fun MovieListContainer() {
                 )
             }
         }
+    }
+
+    if(movieListUiState.value.movieList.size < 100) {
+        listState.OnBottomReached {
+            movieListUiState.value.loadMoreMovieList()
+        }
+    }
+}
+
+@Composable
+fun LazyListState.OnBottomReached(
+    loadMore: () -> Unit,
+) {
+    val shouldLoadMore = remember {
+        derivedStateOf {
+            val lastVisibleItem = layoutInfo.visibleItemsInfo.lastOrNull()
+                ?:
+
+                return@derivedStateOf true
+
+            lastVisibleItem.index == layoutInfo.totalItemsCount - 1
+        }
+    }
+    
+    LaunchedEffect(shouldLoadMore) {
+        snapshotFlow { shouldLoadMore.value }
+            .collect {
+                if(it) loadMore()
+            }
     }
 }
 
