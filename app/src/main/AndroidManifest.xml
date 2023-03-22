@@ -20,7 +20,7 @@
             android:label="@string/title_activity_movie_list"
             android:theme="@style/Theme.Metabox" />
         <activity
-            android:name=".MovieInfoActivity"
+            android:name=".MovieDetailActivity"
             android:exported="false"
             android:label="@string/title_activity_movie_info"
             android:theme="@style/Theme.Metabox" />

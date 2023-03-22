@@ -1,4 +1,4 @@
-package com.clone.metabox.view.movieinfo
+package com.clone.metabox.view.moviedetail
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -14,22 +14,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.clone.metabox.ui.theme.*
 import com.skydoves.landscapist.glide.GlideImage
-import timber.log.Timber
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MovieInfoContainer() {
-    val configuration = LocalConfiguration.current
-
-    val screenHeight = configuration.screenHeightDp.dp
-
+fun MovieDetailContainer() {
     LazyColumn() {
         stickyHeader {
             MovieInfoHeader()
@@ -75,7 +69,8 @@ fun MovieInfoContents () {
 
     Box(
         modifier = Modifier
-            .height(screenHeight)
+            .fillMaxSize()
+            .border(1.dp, Color.Red)
     ) {
         GlideImage(
             imageModel = { "https://img.megabox.co.kr/SharedImg/2023/02/06/7gFJhWRalgHSihiVTu9oOoKRXxMH5mKe_720.jpg" },
@@ -83,77 +78,84 @@ fun MovieInfoContents () {
                 .fillMaxWidth()
         )
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(475.dp)
-                .align(Alignment.BottomCenter)
-                .background(
-                    Brush.verticalGradient(
-                        listOf(Color.White.copy(alpha = 0.1f), Color(0XFF150C1C)),
-                        startY = 50f,
-                        endY = 250f,
-                    ),
-                    alpha = 0.8f
-                )
-        )
+//        Box(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .height(screenHeight)
+//                .background(
+//                    Brush.verticalGradient(
+//                        listOf(Color.White.copy(alpha = 0.1f), Color(0XFF150C1C)),
+//                        startY = 700f,
+//                        endY = 1300f,
+//                    ),
+//                    alpha = 0.8f
+//                )
+//        )
 
-        Column(
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
+        Box(
+            contentAlignment = Alignment.BottomCenter,
             modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.5f)
+                .fillMaxHeight()
+                .border(1.dp, Color.Blue)
                 .align(Alignment.BottomCenter)
         ) {
-            Text(
-                text = "스즈메의 문단속",
-                color = Color.White,
-                fontSize = 22.sp
-            )
-
-            Text(
-                text = "Suzume",
-                color = MaterialTheme.colors.LightGray,
-                fontSize = 13.sp,
-                fontWeight = FontWeight(700)
-            )
-
-            Text(
-                text = "12세 이용가",
-                color = MaterialTheme.colors.DarkGreen,
-                fontSize = 15.sp,
-                fontWeight = FontWeight(700)
-            )
-
-            Row(
-                verticalAlignment = Alignment.Bottom,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            Column(
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .defaultMinSize(minHeight = 400.dp)
+                    .align(Alignment.BottomCenter)
             ) {
                 Text(
-                    text ="1위 (38.7%)",
+                    text = "스즈메의 문단속",
                     color = Color.White,
-                    fontSize = 15.sp
+                    fontSize = 22.sp
+                )
+
+                Text(
+                    text = "Suzume",
+                    color = MaterialTheme.colors.LightGray,
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight(700)
+                )
+
+                Text(
+                    text = "12세 이용가",
+                    color = MaterialTheme.colors.DarkGreen,
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight(700)
                 )
 
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(3.dp)
+                    verticalAlignment = Alignment.Bottom,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text ="평점",
-                        color = Color.LightGray,
-                        fontSize = 14.sp
+                        text ="1위 (38.7%)",
+                        color = Color.White,
+                        fontSize = 15.sp
                     )
 
-                    Text(
-                        text = "9.8",
-                        color = MaterialTheme.colors.Purple,
-                        fontSize = 14.sp
-                    )
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(3.dp)
+                    ) {
+                        Text(
+                            text ="평점",
+                            color = Color.LightGray,
+                            fontSize = 14.sp
+                        )
+
+                        Text(
+                            text = "9.8",
+                            color = MaterialTheme.colors.Purple,
+                            fontSize = 14.sp
+                        )
+                    }
                 }
-            }
 
-            MovieDescriptionBox()
+                MovieDescriptionBox()
+            }
         }
     }
 }

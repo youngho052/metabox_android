@@ -3,7 +3,7 @@ package com.clone.metabox.view.main
 import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModel
-import com.clone.metabox.MovieInfoActivity
+import com.clone.metabox.MovieDetailActivity
 import com.clone.metabox.MovieListActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,7 +32,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun navigateMovieInfo (context: Context) {
-        val intent = Intent(context, MovieInfoActivity::class.java)
+        val intent = Intent(context, MovieDetailActivity::class.java)
 
         context.startActivity(intent)
     }
