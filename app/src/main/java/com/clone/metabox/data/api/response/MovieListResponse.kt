@@ -1,4 +1,4 @@
-package com.clone.metabox.view.data.api.response
+package com.clone.metabox.data.api.response
 
 import androidx.annotation.Keep
 
