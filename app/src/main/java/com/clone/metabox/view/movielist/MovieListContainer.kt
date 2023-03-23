@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.clone.metabox.ui.theme.Gray
 import com.clone.metabox.util.OnBottomReached
+import com.clone.metabox.view.common.CommonLine
 import timber.log.Timber
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -47,11 +48,7 @@ fun MovieListContainer(
             ) {
                 Text("number ${it+1}", color = Color.Red)
                 MovieListContents()
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(1.dp)
-                    .background(MaterialTheme.colors.Gray)
-                )
+                CommonLine(color = MaterialTheme.colors.Gray)
             }
         }
     }
