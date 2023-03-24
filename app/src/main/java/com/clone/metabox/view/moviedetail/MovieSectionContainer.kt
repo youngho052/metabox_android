@@ -1,8 +1,11 @@
 package com.clone.metabox.view.moviedetail
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -11,13 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.clone.metabox.ui.theme.DarkPurple
-import com.clone.metabox.ui.theme.Gray
-import com.clone.metabox.ui.theme.LightBlack
-import com.clone.metabox.ui.theme.LightGray
+import com.clone.metabox.R
+import com.clone.metabox.ui.theme.*
 import com.clone.metabox.view.common.CommonLine
+import com.clone.metabox.view.common.StarRatingBar
 
 @Composable
 fun MovieSectionContainer() {
@@ -28,7 +32,7 @@ fun MovieSectionContainer() {
     }
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(15.dp),
+        verticalArrangement = Arrangement.spacedBy(if(sectionState == "information") 15.dp else 0.dp),
         modifier = Modifier
             .defaultMinSize(minHeight = 500.dp)
             .fillMaxHeight()
@@ -119,6 +123,7 @@ fun MovieSectionContainer() {
 
         when(sectionState) {
             "information" -> MovieInformation()
+            "review" -> MovieReviews()
         }
     }
 }
@@ -240,5 +245,72 @@ fun MovieInformationForm (
 
 @Composable
 fun MovieReviews () {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF101010))
+            .padding(top = 30.dp, bottom = 30.dp)
+    ) {
+        Text(
+            text = "'스즈메의 문단속' 관람평",
+            color = Color.White,
+            fontSize = 24.sp
+        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(3.dp)
+        ) {
+            StarRatingBar(rating = 4.5f, spaceBetween = 5.dp)
+            Text(
+                text = "9",
+                color = MaterialTheme.colors.LightBlue,
+                fontSize = 24.sp
+            )
+        }
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .border(
+                    width = 1.dp,
+                    color = Color(0xFFCCCCCC),
+                    shape = RoundedCornerShape(15.dp)
+                )
+        ) {
+            Text(
+                text = "실관람평 쓰기",
+                color = MaterialTheme.colors.LightGray,
+                fontSize = 13.sp,
+                modifier = Modifier
+                    .padding(top = 5.dp, bottom = 5.dp, start = 8.dp, end = 8.dp)
+            )
+        }
+
+        Text(
+            text = "관람일 기준 7일 이내 등록 시 50P 가 적립됩니다.\n 포인트는 관람평 최대 10편 지급 가능합니다.",
+            textAlign = TextAlign.Center,
+            fontSize = 13.sp,
+            color = Color.White
+        )
+    }
+    ReviewsContainer()
+}
+
+@Composable
+fun ReviewsContainer () {
+    Column(
+        modifier = Modifier
+            .defaultMinSize(minHeight = 500.dp)
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
+
+    }
+}
+
+@Composable
+fun ReviewForm () {
 
 }

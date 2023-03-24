@@ -1,5 +1,6 @@
 package com.clone.metabox.view.moviedetail
 
+import com.clone.metabox.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -11,9 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.clone.metabox.ui.theme.LightGray
+import com.clone.metabox.view.common.IconView
 
 @Composable
 fun MovieDetailHeader (
@@ -39,7 +42,10 @@ fun MovieDetailHeader (
                 .fillMaxSize()
                 .padding(start = 18.dp, end = 18.dp)
         ) {
-            Text("Back", color = Color.White)
+            IconView(
+                painter = painterResource(id = R.drawable.icon_back_white),
+                description = "${R.drawable.icon_back_white}",
+            )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(5.dp)
@@ -69,9 +75,9 @@ fun MovieDetailHeader (
                         fontSize = 13.sp
                     )
                 }
-                Text(
-                    text = "share",
-                    color = Color.White
+                IconView(
+                    painter = painterResource(id = R.drawable.icon_share_white),
+                    description = "${R.drawable.icon_share_white}",
                 )
             }
         }

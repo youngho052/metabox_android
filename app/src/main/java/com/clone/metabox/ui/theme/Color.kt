@@ -25,3 +25,6 @@ val Colors.Purple: Color
 
 val Colors.DarkPurple: Color
     get() = Color(0xFF26182e)
+
+val Colors.LightBlue: Color
+    get() = Color(0xFF14B9CB)
