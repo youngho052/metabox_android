@@ -21,6 +21,8 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
+        buildConfigField("String", "API_END_POINT", "\"https://api.spoonacular.com/\"")
     }
 
     buildTypes {
@@ -69,6 +71,22 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 
+    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+
+    implementation "com.squareup.retrofit2:converter-scalars:2.9.0"
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    // moshi converter
+    implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
+
+    // retrofit2 (server 통신 라이브러리) use (StoryEditorActivity, StoryPlayerActivity)
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    implementation 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+
+    //moshi
+    def moshi = "1.12.0"
+    implementation "com.squareup.moshi:moshi:$moshi"
+    implementation "com.squareup.moshi:moshi-kotlin:$moshi"
+
     def hilt = "1.0.0"
     implementation "androidx.hilt:hilt-work:$hilt"
     kapt "androidx.hilt:hilt-compiler:$hilt"
@@ -86,5 +104,6 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:$work_version"
 
     implementation 'com.jakewharton.timber:timber:5.0.1'
+
     implementation "com.github.skydoves:landscapist-glide:2.1.0"
 }

@@ -23,11 +23,10 @@ import com.clone.metabox.R
 fun StarRatingBar (
     modifier: Modifier = Modifier,
     rating: Float,
-    spaceBetween: Dp = 0.dp
+    spaceBetween: Dp = 0.dp,
+    fillStar: ImageBitmap,
+    emptyStar: ImageBitmap
 ) {
-    val fillStar = ImageBitmap.imageResource(id = R.drawable.icon_star_fill)
-    val emptyStar = ImageBitmap.imageResource(id = R.drawable.icon_star_empty)
-    
     val totalCount = 5
 
     val height = LocalDensity.current.run { emptyStar.height.toDp() }

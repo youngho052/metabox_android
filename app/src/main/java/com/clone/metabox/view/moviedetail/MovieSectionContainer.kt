@@ -1,10 +1,12 @@
 package com.clone.metabox.view.moviedetail
 
+import android.graphics.Paint.Align
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -14,6 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -262,7 +266,12 @@ fun MovieReviews () {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(3.dp)
         ) {
-            StarRatingBar(rating = 4.5f, spaceBetween = 5.dp)
+            StarRatingBar(
+                rating = 4.5f, 
+                spaceBetween = 5.dp,
+                fillStar = ImageBitmap.imageResource(id = R.drawable.icon_star_fill),
+                emptyStar = ImageBitmap.imageResource(id = R.drawable.icon_star_empty)
+            )
             Text(
                 text = "9",
                 color = MaterialTheme.colors.LightBlue,
@@ -301,16 +310,99 @@ fun MovieReviews () {
 @Composable
 fun ReviewsContainer () {
     Column(
+        verticalArrangement = Arrangement.spacedBy(15.dp),
         modifier = Modifier
             .defaultMinSize(minHeight = 500.dp)
             .fillMaxSize()
             .background(Color.White)
+            .padding(top = 30.dp, start = 18.dp, end = 18.dp, bottom = 50.dp)
     ) {
-
+        ReviewForm()
+        CommonLine(color = Color(0xFFE7E7E7))
+        ReviewForm()
+        CommonLine(color = Color(0xFFE7E7E7))
+        ReviewForm()
+        CommonLine(color = Color(0xFFE7E7E7))
+        ReviewForm()
+        CommonLine(color = Color(0xFFE7E7E7))
     }
 }
 
 @Composable
 fun ReviewForm () {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Box(modifier = Modifier
+            .size(30.dp)
+            .background(MaterialTheme.colors.LightGray, CircleShape))
+        Column(
+            modifier = Modifier.fillMaxWidth(0.67f)
+        ) {
+            Text(
+                text = "박영호",
+                color = MaterialTheme.colors.LightGray,
+                fontSize = 16.sp
+            )
+            Text(
+                text = "13분전",
+                color = MaterialTheme.colors.LightGray,
+                fontSize = 16.sp
+            )
+        }
+        StarRatingBar(
+            rating = 4.5f,
+            fillStar = ImageBitmap.imageResource(id = R.drawable.icon_star_fill_purple),
+            emptyStar = ImageBitmap.imageResource(id = R.drawable.icon_star_empty_white)
+        )
+    }
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(0.8f)
+        ) {
+            Text(
+                text = "영화 너무 너무 재미 있어요~!",
+                color = MaterialTheme.colors.LightBlack
+            )
+        }
 
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(5.dp),
+            modifier = Modifier.fillMaxWidth(0.8f)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .background(Color(0xFFF5F5F5), RoundedCornerShape(20.dp))
+            ) {
+                Text(
+                    text = "연출",
+                    color = Color(0xFF666666),
+                    modifier = Modifier
+                        .padding(top = 2.dp, bottom = 2.dp, start = 8.dp, end = 8.dp)
+                )
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .background(Color(0xFFF5F5F5), RoundedCornerShape(20.dp))
+            ) {
+                Text(
+                    text = "스토리",
+                    color = Color(0xFF666666),
+                    modifier = Modifier
+                        .padding(top = 2.dp, bottom = 2.dp, start = 8.dp, end = 8.dp)
+                )
+            }
+        }
+    }
 }
