@@ -35,7 +35,9 @@ fun MainContainer (
     )
 
     LazyColumn(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = 50.dp)
     ) {
         stickyHeader {
             MainHeader()
@@ -62,34 +64,7 @@ fun MainContainer (
         }
     }
 
-    Box(
-        contentAlignment = Alignment.BottomCenter,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(55.dp)
-                .background(Color.White)
-                .border(1.dp, Color(0xFFE9E9E9))
-        ) {
-
-        }
-    }
-}
-
-@Composable
-fun MainHeader () {
-    Row(
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(55.dp)
-            .background(Color(0xFF120d3c))
-    ) {
-        Text("MetaBox",color = Color.White)
-    }
+    MainFooter()
 }
 
 @Composable

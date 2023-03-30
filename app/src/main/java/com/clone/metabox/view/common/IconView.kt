@@ -13,13 +13,14 @@ fun IconView (
     painter: Painter,
     description: String,
     tint: Color = Color.White,
-    size: Int = 28
+    size: Int = 28,
+    modifier: Modifier = Modifier
 ) {
     Icon(
         painter = painter,
         contentDescription = description,
         tint = tint,
-        modifier = Modifier
+        modifier = modifier
             .size(size.dp)
     )
 }

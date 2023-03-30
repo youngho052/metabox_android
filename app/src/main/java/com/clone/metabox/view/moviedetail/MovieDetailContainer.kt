@@ -35,12 +35,6 @@ fun MovieDetailContainer(
     LazyColumn(
         state = listState
     ) {
-//        stickyHeader {
-//            MovieDetailHeader(
-//                scrollPos = scrollPos
-//            )
-//        }
-
         item {
             Column(
                 modifier = Modifier
@@ -49,7 +43,7 @@ fun MovieDetailContainer(
                     .background(Color(0XFF150C1C))
                     .padding(bottom = 50.dp)
             ) {
-                MovieInfoContents()
+                MovieInfoContainer()
                 MovieSectionContainer()
             }
         }
@@ -63,7 +57,7 @@ fun MovieDetailContainer(
 }
 
 @Composable
-fun MovieInfoContents () {
+fun MovieInfoContainer () {
     val configuration = LocalConfiguration.current
 
     val screenHeight = (configuration.screenHeightDp - 110).dp
