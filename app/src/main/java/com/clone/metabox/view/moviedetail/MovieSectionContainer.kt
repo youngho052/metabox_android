@@ -310,7 +310,7 @@ fun MovieReviews () {
 @Composable
 fun ReviewsContainer () {
     Column(
-        verticalArrangement = Arrangement.spacedBy(15.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp),
         modifier = Modifier
             .defaultMinSize(minHeight = 500.dp)
             .fillMaxSize()
@@ -330,78 +330,97 @@ fun ReviewsContainer () {
 
 @Composable
 fun ReviewForm () {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier.fillMaxWidth()
+    Box(
+        contentAlignment = Alignment.TopCenter,
+        modifier = Modifier
+            .fillMaxSize()
     ) {
-        Box(modifier = Modifier
-            .size(30.dp)
-            .background(MaterialTheme.colors.LightGray, CircleShape))
-        Column(
-            modifier = Modifier.fillMaxWidth(0.67f)
-        ) {
-            Text(
-                text = "박영호",
-                color = MaterialTheme.colors.LightGray,
-                fontSize = 16.sp
-            )
-            Text(
-                text = "13분전",
-                color = MaterialTheme.colors.LightGray,
-                fontSize = 16.sp
-            )
-        }
-        StarRatingBar(
-            rating = 4.5f,
-            fillStar = ImageBitmap.imageResource(id = R.drawable.icon_star_fill_purple),
-            emptyStar = ImageBitmap.imageResource(id = R.drawable.icon_star_empty_white)
-        )
-    }
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Box(
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
-                .fillMaxWidth(0.8f)
+                .fillMaxWidth()
+                .padding(top = 5.dp)
         ) {
-            Text(
-                text = "영화 너무 너무 재미 있어요~!",
-                color = MaterialTheme.colors.LightBlack
+            Box(
+                modifier = Modifier
+                    .size(30.dp)
+                    .background(MaterialTheme.colors.LightGray, CircleShape)
             )
+            Text(text = "m", color = Color.Black)
         }
 
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(5.dp),
-            modifier = Modifier.fillMaxWidth(0.8f)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = Modifier
+                .fillMaxWidth(0.75f)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
+                horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
-                    .background(Color(0xFFF5F5F5), RoundedCornerShape(20.dp))
+                    .fillMaxWidth()
             ) {
-                Text(
-                    text = "연출",
-                    color = Color(0xFF666666),
-                    modifier = Modifier
-                        .padding(top = 2.dp, bottom = 2.dp, start = 8.dp, end = 8.dp)
+                Column() {
+                    Text(
+                        text = "박영호",
+                        color = MaterialTheme.colors.LightGray,
+                        fontSize = 15.sp
+                    )
+                    Text(
+                        text = "13분전",
+                        color = MaterialTheme.colors.LightGray,
+                        fontSize = 15.sp
+                    )
+                }
+                StarRatingBar(
+                    rating = 4.5f,
+                    fillStar = ImageBitmap.imageResource(id = R.drawable.icon_star_fill_purple),
+                    emptyStar = ImageBitmap.imageResource(id = R.drawable.icon_star_empty_white)
                 )
             }
+
             Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
-                    .background(Color(0xFFF5F5F5), RoundedCornerShape(20.dp))
+                    .fillMaxWidth()
             ) {
                 Text(
-                    text = "스토리",
-                    color = Color(0xFF666666),
-                    modifier = Modifier
-                        .padding(top = 2.dp, bottom = 2.dp, start = 8.dp, end = 8.dp)
+                    text = "영화 너무 너무 재미 있어요~!",
+                    color = MaterialTheme.colors.LightBlack
                 )
+            }
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(5.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .background(Color(0xFFF5F5F5), RoundedCornerShape(20.dp))
+                ) {
+                    Text(
+                        text = "연출",
+                        color = Color(0xFF666666),
+                        modifier = Modifier
+                            .padding(top = 2.dp, bottom = 2.dp, start = 8.dp, end = 8.dp)
+                    )
+                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .background(Color(0xFFF5F5F5), RoundedCornerShape(20.dp))
+                ) {
+                    Text(
+                        text = "스토리",
+                        color = Color(0xFF666666),
+                        modifier = Modifier
+                            .padding(top = 2.dp, bottom = 2.dp, start = 8.dp, end = 8.dp)
+                    )
+                }
             }
         }
     }

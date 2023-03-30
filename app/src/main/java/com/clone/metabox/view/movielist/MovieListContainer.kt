@@ -46,7 +46,6 @@ fun MovieListContainer(
                     .fillMaxSize()
                     .padding(start = 20.dp, end = 20.dp)
             ) {
-                Text("number ${it+1}", color = Color.Red)
                 MovieListContents()
                 CommonLine(color = MaterialTheme.colors.Gray)
             }
