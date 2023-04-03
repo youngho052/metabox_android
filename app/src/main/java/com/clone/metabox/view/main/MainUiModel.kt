@@ -4,5 +4,6 @@ import android.content.Context
 
 data class MainUiModel (
     val navigateMovieList: (Context) -> Unit = {},
-    val navigateMovieInfo: (Context) -> Unit = {}
+    val navigateMovieInfo: (Context) -> Unit = {},
+    val navigateTheaterInfo: (Context) -> Unit = {}
 )

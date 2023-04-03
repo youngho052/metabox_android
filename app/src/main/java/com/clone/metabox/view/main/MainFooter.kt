@@ -1,7 +1,9 @@
 package com.clone.metabox.view.main
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -16,7 +18,10 @@ import com.clone.metabox.view.common.IconView
 import com.clone.metabox.R
 
 @Composable
-fun MainFooter () {
+fun MainFooter (
+    navigateTheaterInfo: () -> Unit,
+    navigateMovieList: () -> Unit,
+) {
     Box(
         contentAlignment = Alignment.BottomCenter,
         modifier = Modifier.fillMaxSize()
@@ -36,11 +41,17 @@ fun MainFooter () {
             )
             IconBox(
                 imagePainter = painterResource(id = R.drawable.icon_movie_black),
-                category = "영화"
+                category = "영화",
+                modifier = Modifier.clickable {
+                    navigateMovieList()
+                }
             )
             IconBox(
                 imagePainter = painterResource(id = R.drawable.icon_theater_black),
-                category = "극장"
+                category = "극장",
+                modifier = Modifier.clickable {
+                    navigateTheaterInfo()
+                }
             )
             IconBox(
                 imagePainter = painterResource(id = R.drawable.icon_calendar_black),
@@ -57,10 +68,12 @@ fun MainFooter () {
 @Composable
 fun IconBox (
     imagePainter: Painter,
-    category: String
+    category: String,
+    modifier: Modifier = Modifier,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
     ) {
         IconView(
             painter = imagePainter,

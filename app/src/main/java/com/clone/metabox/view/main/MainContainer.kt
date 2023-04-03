@@ -14,11 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.clone.metabox.ui.theme.Gray
+import com.clone.metabox.ui.theme.LightGray
 import com.skydoves.landscapist.glide.GlideImage
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -50,7 +52,13 @@ fun MainContainer (
                     .fillMaxSize()
             ) {
                 Column(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .defaultMinSize(minHeight = 800.dp)
+                        .background(
+                            color = Color.White,
+                            shape = RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp)
+                        ),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
@@ -59,12 +67,16 @@ fun MainContainer (
                         navigateMovieList = { mainUiState.value.navigateMovieList(context) },
                         navigateMovieInfo = { mainUiState.value.navigateMovieInfo(context) }
                     )
+                    MovieFeedContainer()
                 }
             }
         }
     }
 
-    MainFooter()
+    MainFooter(
+        navigateTheaterInfo = { mainUiState.value.navigateTheaterInfo(context) },
+        navigateMovieList = { mainUiState.value.navigateMovieList(context) },
+    )
 }
 
 @Composable
@@ -79,11 +91,6 @@ fun MainContents (
         verticalArrangement = Arrangement.spacedBy(15.dp),
         modifier = Modifier
             .fillMaxSize()
-            .height(1000.dp)
-            .background(
-                color = Color.White,
-                shape = RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp)
-            )
             .padding(top = 30.dp, start = 20.dp)
     ) {
         SlideFeedView(
@@ -154,6 +161,60 @@ fun MainContents (
                     navigateMovieList()
                 }
         )
+    }
+}
+
+@Composable
+fun MovieFeedContainer () {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(20.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 20.dp, end = 20.dp)
+    ) {
+        Text(
+            text = "무비피드",
+            fontSize = 24.sp
+        )
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .height(300.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .border(1.dp, Color.Red, RoundedCornerShape(10.dp))
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
+                    .clip(RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp))
+                    .background(Color.Black.copy(alpha = 0.5f))
+                    .padding(15.dp)
+            ) {
+                Box(modifier = Modifier
+                    .clip(CircleShape)
+                    .size(35.dp)
+                    .border(1.dp, Color.Red, CircleShape)
+                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth(0.85f)
+                ) {
+                    Text(
+                        text = "잡식성쿼카",
+                        color = Color.White,
+                        fontSize = 15.sp
+                    )
+                    Text(
+                        text = "description",
+                        color = MaterialTheme.colors.LightGray,
+                        fontSize = 15.sp
+                    )
+                }
+                Text("like")
+            }
+        }
     }
 }
 
