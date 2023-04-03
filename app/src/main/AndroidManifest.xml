@@ -15,6 +15,16 @@
         android:theme="@style/Theme.Metabox"
         tools:targetApi="31">
         <activity
+            android:name=".TheaterDetailActivity"
+            android:exported="false"
+            android:label="@string/title_activity_theater_detail"
+            android:theme="@style/Theme.Metabox" />
+        <activity
+            android:name=".TheaterActivity"
+            android:exported="false"
+            android:label="@string/title_activity_theater"
+            android:theme="@style/Theme.Metabox" />
+        <activity
             android:name=".MovieListActivity"
             android:exported="false"
             android:label="@string/title_activity_movie_list"
