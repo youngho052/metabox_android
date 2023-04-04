@@ -13,6 +13,7 @@ class MovieDetailActivity : ComponentActivity() {
     private val movieDetailViewModel: MovieDetailViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             MovieDetailContainer(
                 movieDetailViewModel = movieDetailViewModel
