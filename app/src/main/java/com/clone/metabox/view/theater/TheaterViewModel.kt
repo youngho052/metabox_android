@@ -18,7 +18,12 @@ class TheaterViewModel @Inject constructor(
     val theaterUiState: StateFlow<TheaterUiState>
         get() = _theaterUiState
 
-    fun navigateTheaterDetail (
+    init {
+        _theaterUiState.value = _theaterUiState.value.copy(
+            navigateTheaterDetail = { context, theaterName -> navigateTheaterDetail(context,theaterName) }
+        )
+    }
+    private fun navigateTheaterDetail (
         context: Context,
         theaterName: String,
     ) {

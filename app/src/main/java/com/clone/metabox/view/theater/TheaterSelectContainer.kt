@@ -39,7 +39,7 @@ fun TheaterSelectContainer (
         TheaterSelectHeader()
         TheaterListContainer(
             navigateTheaterDetail = { context: Context, theaterName: String ->
-                theaterViewModel.navigateTheaterDetail(context, theaterName)
+                theaterUiState.value.navigateTheaterDetail(context, theaterName)
             }
         )
     }

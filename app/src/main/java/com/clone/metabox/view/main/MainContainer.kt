@@ -1,5 +1,6 @@
 package com.clone.metabox.view.main
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.*
 import androidx.compose.foundation.border
@@ -15,13 +16,19 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.clone.metabox.data.api.response.BoxOffice
+import com.clone.metabox.data.api.response.RecommendMovie
 import com.clone.metabox.ui.theme.Gray
+import com.clone.metabox.ui.theme.LightBlue
 import com.clone.metabox.ui.theme.LightGray
 import com.skydoves.landscapist.glide.GlideImage
+import timber.log.Timber
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -64,10 +71,18 @@ fun MainContainer (
                 ) {
 //                    EventContainer()
                     MainContents(
-                        navigateMovieList = { mainUiState.value.navigateMovieList(context) },
-                        navigateMovieInfo = { mainUiState.value.navigateMovieInfo(context) }
+                        boxOffice = mainUiState.value.mainPageInformation.boxOffice,
+                        navigateMovieList = { context: Context ->
+                            mainUiState.value.navigateMovieList(context)
+                        },
+                        navigateMovieDetail = { context: Context, movieId: String ->
+                            mainUiState.value.navigateMovieDetail(context, movieId)
+                        }
                     )
-                    MovieFeedContainer()
+
+                    MovieFeedContainer(
+                        recommendMovie = mainUiState.value.mainPageInformation.recommandMovie
+                    )
                 }
             }
         }
@@ -81,11 +96,11 @@ fun MainContainer (
 
 @Composable
 fun MainContents (
-    navigateMovieList: () -> Unit,
-    navigateMovieInfo: () -> Unit,
+    boxOffice: List<BoxOffice>,
+    navigateMovieList: (Context) -> Unit,
+    navigateMovieDetail: (Context, String) -> Unit,
 ) {
-    val contentFeedList = listOf("#박스오피스", "#상영예정", "#돌비시네마", "단독", "클소", "#필소")
-    val eventFeedList = listOf("메가Pick", "영화", "극장", "제휴/할인", "시사회/무대인사")
+    val context = LocalContext.current
 
     Column(
         verticalArrangement = Arrangement.spacedBy(15.dp),
@@ -93,27 +108,45 @@ fun MainContents (
             .fillMaxSize()
             .padding(top = 30.dp, start = 20.dp)
     ) {
-        SlideFeedView(
-            feedList = contentFeedList,
-            contentList = null
-        ) {}
-
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(15.dp),
             contentPadding = PaddingValues(end = 20.dp),
         ) {
-            items(count = 15) {
+            items(count = boxOffice.size) {
                 if(it + 1 != 15) {
-                    Box(
+                    Column(
                         modifier = Modifier
-                            .width(150.dp)
-                            .height(300.dp)
-                            .border(1.dp, Color.Black, RoundedCornerShape(15.dp))
-                            .clickable {
-                                navigateMovieInfo()
-                            }
+                            .border(1.dp, MaterialTheme.colors.LightGray, RoundedCornerShape(15.dp))
                     ) {
-
+                        GlideImage(
+                            imageModel = { "${boxOffice[it].poster}" },
+                            modifier = Modifier
+                                .width(150.dp)
+                                .height(250.dp)
+                                .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
+                                .clickable {
+                                    navigateMovieDetail(context, boxOffice[it].movieId)
+                                }
+                        )
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(10.dp),
+                            modifier = Modifier
+                                .width(150.dp)
+                                .height(100.dp)
+                                .clip(RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp))
+                                .padding(top = 18.dp, start = 12.dp, end = 12.dp)
+                        ) {
+                            Text("${boxOffice[it].titleKr}")
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier
+                                    .width(85.dp)
+                                    .height(30.dp)
+                                    .background(MaterialTheme.colors.LightBlue, RoundedCornerShape(8.dp))
+                            ) {
+                                Text(text = "바로예매", color = Color.White)
+                            }
+                        }
                     }
                 } else {
                     Box(
@@ -122,7 +155,7 @@ fun MainContents (
                             .width(150.dp)
                             .height(300.dp)
                             .clickable {
-                                navigateMovieList()
+                                navigateMovieList(context)
                             }
                     ) {
                         Column(
@@ -158,14 +191,18 @@ fun MainContents (
             color = MaterialTheme.colors.Gray,
             modifier = Modifier
                 .clickable {
-                    navigateMovieList()
+                    navigateMovieList(context)
                 }
         )
     }
 }
 
 @Composable
-fun MovieFeedContainer () {
+fun MovieFeedContainer (
+    recommendMovie: RecommendMovie
+) {
+    Timber.d("recommend item ${recommendMovie}")
+
     Column(
         verticalArrangement = Arrangement.spacedBy(20.dp),
         modifier = Modifier
@@ -173,15 +210,15 @@ fun MovieFeedContainer () {
             .padding(start = 20.dp, end = 20.dp)
     ) {
         Text(
-            text = "무비피드",
+            text = "추천영화",
             fontSize = 24.sp
         )
         Box(modifier = Modifier
             .fillMaxSize()
             .height(300.dp)
             .clip(RoundedCornerShape(10.dp))
-            .border(1.dp, Color.Red, RoundedCornerShape(10.dp))
         ) {
+            GlideImage(imageModel = { recommendMovie.posterBg })
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -202,7 +239,7 @@ fun MovieFeedContainer () {
                         .fillMaxWidth(0.85f)
                 ) {
                     Text(
-                        text = "잡식성쿼카",
+                        text = "${recommendMovie.titleKr}",
                         color = Color.White,
                         fontSize = 15.sp
                     )

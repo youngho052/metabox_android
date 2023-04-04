@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.clone.metabox.data.api.response.MovieDetailResponse
 import com.clone.metabox.ui.theme.*
 import com.skydoves.landscapist.glide.GlideImage
 import timber.log.Timber
@@ -28,6 +29,8 @@ import timber.log.Timber
 fun MovieDetailContainer(
     movieDetailViewModel: MovieDetailViewModel
 ) {
+    val movieDetailUiState = movieDetailViewModel.movieDetailUiState.collectAsState()
+
     val listState = rememberLazyListState()
 
     val scrollPos = listState.firstVisibleItemScrollOffset
@@ -43,8 +46,12 @@ fun MovieDetailContainer(
                     .background(Color(0XFF150C1C))
                     .padding(bottom = 50.dp)
             ) {
-                MovieInfoContainer()
-                MovieSectionContainer()
+                MovieInfoContainer(
+                    movieDetailInformation = movieDetailUiState.value.movieDetailInformation
+                )
+                MovieSectionContainer(
+                    movieDetailInformation = movieDetailUiState.value.movieDetailInformation
+                )
             }
         }
     }
@@ -57,7 +64,9 @@ fun MovieDetailContainer(
 }
 
 @Composable
-fun MovieInfoContainer () {
+fun MovieInfoContainer (
+    movieDetailInformation: MovieDetailResponse
+) {
     val configuration = LocalConfiguration.current
 
     val screenHeight = (configuration.screenHeightDp - 110).dp
@@ -73,9 +82,10 @@ fun MovieInfoContainer () {
                 .fillMaxHeight()
         ) {
             GlideImage(
-                imageModel = { "https://img.megabox.co.kr/SharedImg/2023/02/06/7gFJhWRalgHSihiVTu9oOoKRXxMH5mKe_720.jpg" },
+                imageModel = { movieDetailInformation.poster },
                 modifier = Modifier
                     .fillMaxWidth()
+                    .height(600.dp)
             )
 
             Box(
@@ -102,20 +112,20 @@ fun MovieInfoContainer () {
                 .padding(top = 400.dp)
         ) {
             Text(
-                text = "스즈메의 문단속",
+                text = "${movieDetailInformation.titleKr}",
                 color = Color.White,
                 fontSize = 22.sp
             )
 
             Text(
-                text = "Suzume",
+                text = "${movieDetailInformation.titleEn}",
                 color = MaterialTheme.colors.LightGray,
                 fontSize = 13.sp,
                 fontWeight = FontWeight(700)
             )
 
             Text(
-                text = "12세 이용가",
+                text = "${movieDetailInformation.grade}세 이용가",
                 color = MaterialTheme.colors.DarkGreen,
                 fontSize = 15.sp,
                 fontWeight = FontWeight(700)
@@ -148,13 +158,19 @@ fun MovieInfoContainer () {
                 }
             }
 
-            MovieDescriptionBox()
+            MovieDescriptionBox(
+                summaryTitle = movieDetailInformation.summaryTitle,
+                summaryDesc = movieDetailInformation.summaryDesc
+            )
         }
     }
 }
 
 @Composable
-fun MovieDescriptionBox () {
+fun MovieDescriptionBox (
+    summaryTitle: String,
+    summaryDesc: String,
+) {
     var moreClickAble: MutableState<Boolean> = remember { mutableStateOf(false) }
 
     Column(
@@ -164,18 +180,13 @@ fun MovieDescriptionBox () {
             .padding(top = 20.dp, start = 18.dp, end = 18.dp, bottom = 20.dp)
     ) {
         Text(
-            text = "'이 근처에 폐허 없니? 문을 찾고 있어'",
+            text = "$summaryTitle",
             color = Color.White,
             fontSize = 15.sp,
         )
         Column() {
             Text(
-                text = "'이 근처에 폐허 없니? 문을 찾고 있어'",
-                color = MaterialTheme.colors.LightGray,
-                fontSize = 15.sp,
-            )
-            Text(
-                text = "'이 근처에 폐허 없니? 문을 찾고 있어'",
+                text = "$summaryDesc",
                 color = MaterialTheme.colors.LightGray,
                 fontSize = 15.sp,
             )

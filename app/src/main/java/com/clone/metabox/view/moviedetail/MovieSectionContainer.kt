@@ -23,12 +23,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.clone.metabox.R
+import com.clone.metabox.data.api.response.MovieDetailResponse
 import com.clone.metabox.ui.theme.*
 import com.clone.metabox.view.common.CommonLine
 import com.clone.metabox.view.common.StarRatingBar
 
 @Composable
-fun MovieSectionContainer() {
+fun MovieSectionContainer(
+    movieDetailInformation: MovieDetailResponse
+) {
     var sectionState by remember { mutableStateOf("information") }
 
     fun changeSectionState (section: String) {
@@ -126,24 +129,28 @@ fun MovieSectionContainer() {
         }
 
         when(sectionState) {
-            "information" -> MovieInformation()
+            "information" -> MovieInformation(
+                movieDetailInformation = movieDetailInformation
+            )
             "review" -> MovieReviews()
         }
     }
 }
 
 @Composable
-fun MovieInformation () {
+fun MovieInformation (
+    movieDetailInformation: MovieDetailResponse
+) {
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier
             .fillMaxSize()
             .padding(start = 18.dp, end = 18.dp)
     ) {
-        MovieInformationForm(title = "개봉", description = "2023.03.08")
-        MovieInformationForm(title = "타입", description = "2D ATMOS(자막), 2D Dolby(자막), 2D(더빙), 2D(자막)")
-        MovieInformationForm(title = "장르", description = "애니메이션 / 122 분")
-        MovieInformationForm(title = "등급", description = "12세이상관람가")
+        MovieInformationForm(title = "개봉", description = "${movieDetailInformation.openingDate}")
+        MovieInformationForm(title = "타입", description = "${movieDetailInformation.type}")
+        MovieInformationForm(title = "장르", description = "${movieDetailInformation.genre} / ${movieDetailInformation.runningTime} 분")
+        MovieInformationForm(title = "등급", description = "${movieDetailInformation.grade}세이상관람가")
         CommonLine(MaterialTheme.colors.LightBlack)
         MovieInformationForm(title = "감독", description = "신카이 마코토")
         MovieInformationForm(

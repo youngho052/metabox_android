@@ -2,6 +2,9 @@ package com.clone.metabox.di
 
 import android.content.Context
 import com.clone.metabox.BuildConfig
+import com.clone.metabox.data.api.MainPageService
+import com.clone.metabox.data.api.MovieDetailService
+import com.clone.metabox.data.api.MovieListService
 import com.google.gson.GsonBuilder
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -17,11 +20,36 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import retrofit2.create
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module(includes = [ApiModule.Providers::class])
 object ApiModule {
+    @Provides
+    @Singleton
+    fun provideMainPageService(
+        retrofit: Retrofit
+    ): MainPageService {
+        return retrofit.create(MainPageService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMovieListService(
+        retrofit: Retrofit
+    ): MovieListService {
+        return retrofit.create(MovieListService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMovieDetailService(
+        retrofit: Retrofit
+    ): MovieDetailService {
+        return retrofit.create(MovieDetailService::class.java)
+    }
+
     @InstallIn(SingletonComponent::class)
     @Module
     internal object Providers {
