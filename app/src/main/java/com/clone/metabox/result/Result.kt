@@ -5,7 +5,6 @@ import com.clone.metabox.result.Result.*
 
 @Keep
 sealed class Result<out R> {
-
     @Keep
     data class Success<out T>(val data: T) : Result<T>()
     @Keep
