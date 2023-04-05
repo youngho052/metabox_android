@@ -53,6 +53,14 @@ fun MainContainer (
         }
 
         item {
+//            Text(
+//                text = "kakao login",
+//                modifier =
+//                    Modifier
+//                        .size(50.dp)
+//                        .border(1.dp, Color.Red)
+//                        .clickable { mainViewModel.kakaoLoginHandle() }
+//            )
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
@@ -81,7 +89,10 @@ fun MainContainer (
                     )
 
                     MovieFeedContainer(
-                        recommendMovie = mainUiState.value.mainPageInformation.recommandMovie
+                        recommendMovie = mainUiState.value.mainPageInformation.recommandMovie,
+                        navigateMovieDetail = { context: Context, movieId: String ->
+                            mainUiState.value.navigateMovieDetail(context, movieId)
+                        }
                     )
                 }
             }
@@ -199,9 +210,10 @@ fun MainContents (
 
 @Composable
 fun MovieFeedContainer (
-    recommendMovie: RecommendMovie
+    recommendMovie: RecommendMovie,
+    navigateMovieDetail: (Context, String) -> Unit
 ) {
-    Timber.d("recommend item ${recommendMovie}")
+    val context = LocalContext.current
 
     Column(
         verticalArrangement = Arrangement.spacedBy(20.dp),
@@ -213,10 +225,14 @@ fun MovieFeedContainer (
             text = "추천영화",
             fontSize = 24.sp
         )
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .height(300.dp)
-            .clip(RoundedCornerShape(10.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .height(300.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .clickable {
+                    navigateMovieDetail(context, recommendMovie._id)
+                }
         ) {
             GlideImage(imageModel = { recommendMovie.posterBg })
             Row(

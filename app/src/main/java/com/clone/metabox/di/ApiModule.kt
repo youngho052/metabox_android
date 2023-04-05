@@ -2,6 +2,7 @@ package com.clone.metabox.di
 
 import android.content.Context
 import com.clone.metabox.BuildConfig
+import com.clone.metabox.data.api.KaKaoLoginService
 import com.clone.metabox.data.api.MainPageService
 import com.clone.metabox.data.api.MovieDetailService
 import com.clone.metabox.data.api.MovieListService
@@ -50,6 +51,14 @@ object ApiModule {
         return retrofit.create(MovieDetailService::class.java)
     }
 
+    @Provides
+    @Singleton
+    fun provideKaKaoLoginService(
+        retrofit: Retrofit
+    ): KaKaoLoginService {
+        return retrofit.create(KaKaoLoginService::class.java)
+    }
+
     @InstallIn(SingletonComponent::class)
     @Module
     internal object Providers {
@@ -57,17 +66,8 @@ object ApiModule {
         @Singleton
         fun provideOkHttpClient(
             @ApplicationContext context: Context,
-//            preferencesStorage: PreferencesStorage
         ): OkHttpClient {
             return OkHttpClient.Builder()
-//                .addInterceptor(Interceptor { chain ->
-//                    val userToken = runBlocking {
-//                        preferencesStorage.userToken.first()
-//                    }
-//                    val request = chain.request().newBuilder().addHeader("Authorization", userToken).build()
-//                    chain.proceed(request)
-//                })
-//                .authenticator(TokenAuthenticator(preferencesStorage))
                 .addInterceptor(HttpLoggingInterceptor().apply {
                     level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
                     else HttpLoggingInterceptor.Level.NONE
