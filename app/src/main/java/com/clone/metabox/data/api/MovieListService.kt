@@ -5,7 +5,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface MovieListService {
-    @GET("api/v1/movie")
+    @GET("movie")
     suspend fun getMovieList (
         @Query ("offset") offset: Int = 0
     ): MovieListResponse

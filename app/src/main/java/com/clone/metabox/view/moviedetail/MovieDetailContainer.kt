@@ -32,7 +32,6 @@ fun MovieDetailContainer(
     val movieDetailUiState = movieDetailViewModel.movieDetailUiState.collectAsState()
 
     val listState = rememberLazyListState()
-
     val scrollPos = listState.firstVisibleItemScrollOffset
 
     LazyColumn(
@@ -41,12 +40,11 @@ fun MovieDetailContainer(
         item {
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight()
+                    .fillMaxSize()
                     .background(Color(0XFF150C1C))
                     .padding(bottom = 50.dp)
             ) {
-                MovieInfoContainer(
+                MovieDetailInformation(
                     movieDetailInformation = movieDetailUiState.value.movieDetailInformation
                 )
                 MovieSectionContainer(
@@ -60,11 +58,11 @@ fun MovieDetailContainer(
         scrollPos = scrollPos
     )
 
-    BottomBar()
+    MovieDetailFooter()
 }
 
 @Composable
-fun MovieInfoContainer (
+fun MovieDetailInformation (
     movieDetailInformation: MovieDetailResponse
 ) {
     val configuration = LocalConfiguration.current
@@ -78,8 +76,7 @@ fun MovieInfoContainer (
     ) {
         Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
+                .fillMaxSize()
         ) {
             GlideImage(
                 imageModel = { movieDetailInformation.poster },
@@ -260,42 +257,6 @@ fun MovieDescriptionBox (
                 fontSize = 15.sp,
                 fontWeight = FontWeight(600)
             )
-        }
-    }
-}
-
-@Composable
-fun BottomBar () {
-    Box(
-        contentAlignment = Alignment.BottomCenter,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(55.dp)
-                .background(Color.White)
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .fillMaxWidth(0.2f)
-                    .height(55.dp)
-            ) {
-                Text(text = "좋아요")
-            }
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth(1f)
-                    .height(55.dp)
-                    .background(Color(0xFF57A5AE))
-            ) {
-                Text("바로 예매", color = Color.White)
-            }
         }
     }
 }

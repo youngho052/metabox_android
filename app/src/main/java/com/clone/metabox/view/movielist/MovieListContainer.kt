@@ -1,14 +1,12 @@
 package com.clone.metabox.view.movielist
 
 import android.content.Context
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
@@ -18,7 +16,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.clone.metabox.data.api.response.MovieListResponse
@@ -28,7 +28,10 @@ import com.clone.metabox.ui.theme.LightBlue
 import com.clone.metabox.ui.theme.LightGray
 import com.clone.metabox.util.OnBottomReached
 import com.clone.metabox.view.common.CommonLine
+import com.clone.metabox.view.common.IconView
 import com.skydoves.landscapist.glide.GlideImage
+import com.clone.metabox.R
+import com.skydoves.landscapist.ImageOptions
 import timber.log.Timber
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -55,8 +58,9 @@ fun MovieListContainer(
                     .fillMaxSize()
                     .padding(start = 20.dp, end = 20.dp)
             ) {
-                MovieListContents(
+                MovieListContainer(
                     movies = movieListUiState.value.movieList.movies[it],
+                    rank = it + 1,
                     navigateMovieDetail = { context, movieId -> movieListUiState.value.navigateMovieDetail(context, movieId) }
                 )
                 CommonLine(color = MaterialTheme.colors.Gray)
@@ -77,25 +81,57 @@ fun MovieListContainer(
 
 @Composable
 fun MovieListHeader() {
-    Row(
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
+    val context = LocalContext.current as ComponentActivity
+
+    Box(
+        contentAlignment = Alignment.Center,
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .height(55.dp)
             .background(Color.White)
     ) {
-        Text(
-            text = "영화",
-            fontSize = 18.sp,
-            color = Color.Black
-        )
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            Text(
+                text = "영화",
+                fontSize = 18.sp,
+                color = Color.Black
+            )
+        }
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(55.dp)
+                .padding(start = 18.dp, end = 18.dp)
+        ) {
+            IconView(
+                painter = painterResource(id = R.drawable.icon_back_black),
+                description = "${R.drawable.icon_back_black}",
+                tint = Color.Unspecified,
+                modifier = Modifier.clickable {
+                    context.finish()
+                }
+            )
+            IconView(
+                painter = painterResource(id = R.drawable.icon_menu_black),
+                description = "${R.drawable.icon_menu_black}",
+                tint = Color.Unspecified
+            )
+        }
     }
 }
 
 @Composable
-fun MovieListContents (
+fun MovieListContainer (
     movies: Movies,
+    rank: Int,
     navigateMovieDetail: (Context, String) -> Unit
 ) {
     val context = LocalContext.current
@@ -104,73 +140,77 @@ fun MovieListContents (
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier
             .fillMaxSize()
+            .height(155.dp)
             .clickable {
                 navigateMovieDetail(context, movies.movieId)
             }
     ) {
-        GlideImage(
-            imageModel = {"${movies.poster}"},
+        Box(
             modifier = Modifier
                 .width(105.dp)
-                .height(155.dp)
+                .fillMaxHeight()
                 .clip(RoundedCornerShape(5.dp))
-        )
+        ) {
+            GlideImage(
+                imageModel = {"${movies.poster}"},
+                imageOptions = ImageOptions(
+                    contentScale = ContentScale.Fit
+                ),
+            )
+            Text(
+                text ="$rank",
+                color = Color.White,
+                fontSize = 20.sp,
+                modifier = Modifier
+                    .padding(start = 6.dp, top = 2.dp)
+            )
+        }
+
         Column(
             verticalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
-                .height(155.dp)
+                .fillMaxHeight()
         ) {
             Text(
                 text = "${movies.titleKr}",
                 fontSize = 16.sp,
                 color = Color(0xFF030303)
             )
+
             Column(
                 verticalArrangement = Arrangement.spacedBy(5.dp)
             ) {
-                Text(
-                    text ="예매율",
-                    fontSize = 12.sp,
-                    color = Color(0xFF999999)
+                MovieInformationForm(title = "예매율", "55%")
+                MovieInformationForm(title = "개봉일", information = "${movies.openingDate}")
+                MovieInformationForm(
+                    title = "실관람평",
+                    information = "${movies.grade}",
+                    color = MaterialTheme.colors.LightBlue
                 )
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
-                    Text(
-                        text = "개봉일",
-                        fontSize = 12.sp,
-                        color = MaterialTheme.colors.LightGray
-                    )
-                    Text(
-                        text = "${movies.openingDate}",
-                        fontSize = 12.sp,
-                        color = Color.Black
-                    )
-                }
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
-                    Text(
-                        text = "실관람평",
-                        fontSize = 12.sp,
-                        color = Color(0xFF999999)
-                    )
-                    Text(
-                        text = "${movies.grade}",
-                        fontSize = 12.sp,
-                        color = MaterialTheme.colors.LightBlue
-                    )
-                }
             }
         }
-//        GlideImage(
-//            modifier = Modifier
-//                .width(105.dp)
-//                .height(135.dp)
-//                .border(1.dp, Color.Black),
-//            imageModel = { /*TODO*/ }
-//        )
+    }
+}
+
+@Composable
+fun MovieInformationForm (
+    title: String,
+    information: String,
+    color: Color = Color.Black
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Text(
+            text = "$title",
+            fontSize = 12.sp,
+            color = MaterialTheme.colors.LightGray
+        )
+        Text(
+            text = "$information",
+            fontSize = 12.sp,
+            color = color
+        )
     }
 }

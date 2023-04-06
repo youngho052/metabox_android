@@ -22,7 +22,7 @@ android {
             useSupportLibrary true
         }
 
-        buildConfigField("String", "API_END_POINT", "\"http://3.35.11.118:3000/\"")
+        buildConfigField("String", "API_END_POINT", "\"http://3.35.11.118:3000/api/v1/\"")
     }
 
     buildTypes {

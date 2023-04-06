@@ -1,6 +1,5 @@
 package com.clone.metabox.view.main
 
-import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -37,7 +36,7 @@ fun MainFooter (
         ) {
             IconBox(
                 imagePainter = painterResource(id = R.drawable.icon_home_black),
-                category = "홈"
+                category = "홈",
             )
             IconBox(
                 imagePainter = painterResource(id = R.drawable.icon_movie_black),
@@ -69,6 +68,7 @@ fun MainFooter (
 fun IconBox (
     imagePainter: Painter,
     category: String,
+    tint: Color = Color.Unspecified,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -78,7 +78,7 @@ fun IconBox (
         IconView(
             painter = imagePainter,
             description = "$imagePainter",
-            tint = Color.Unspecified,
+            tint = tint,
             size = 30
         )
         Text(

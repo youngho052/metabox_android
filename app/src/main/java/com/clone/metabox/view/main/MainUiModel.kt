@@ -10,9 +10,5 @@ data class MainUiModel (
     val navigateMovieList: (Context) -> Unit = {},
     val navigateMovieDetail: (Context, String) -> Unit = { context, movieId -> },
     val navigateTheaterInfo: (Context) -> Unit = {},
-    val mainPageInformation: MainPageResponse = MainPageResponse(
-        boxOffice = listOf(BoxOffice()),
-        recommandMovie = RecommendMovie(),
-        popUp = PopUp()
-    )
+    val mainPageInformation: MainPageResponse = MainPageResponse()
 )

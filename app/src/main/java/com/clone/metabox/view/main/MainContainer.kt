@@ -19,14 +19,22 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
+import com.clone.metabox.R
 import com.clone.metabox.data.api.response.BoxOffice
 import com.clone.metabox.data.api.response.RecommendMovie
 import com.clone.metabox.ui.theme.Gray
 import com.clone.metabox.ui.theme.LightBlue
 import com.clone.metabox.ui.theme.LightGray
+import com.clone.metabox.ui.theme.Purple
+import com.clone.metabox.view.common.IconView
+import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
 import timber.log.Timber
 
@@ -61,40 +69,34 @@ fun MainContainer (
 //                        .border(1.dp, Color.Red)
 //                        .clickable { mainViewModel.kakaoLoginHandle() }
 //            )
-            Box(
-                contentAlignment = Alignment.Center,
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .defaultMinSize(minHeight = 800.dp)
+                    .background(
+                        color = Color.White,
+                        shape = RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp)
+                    )
+                    .padding(bottom = 50.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .defaultMinSize(minHeight = 800.dp)
-                        .background(
-                            color = Color.White,
-                            shape = RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp)
-                        ),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(20.dp)
-                ) {
-//                    EventContainer()
-                    MainContents(
-                        boxOffice = mainUiState.value.mainPageInformation.boxOffice,
-                        navigateMovieList = { context: Context ->
-                            mainUiState.value.navigateMovieList(context)
-                        },
-                        navigateMovieDetail = { context: Context, movieId: String ->
-                            mainUiState.value.navigateMovieDetail(context, movieId)
-                        }
-                    )
+                BoxOfficeMovieContainer(
+                    boxOffice = mainUiState.value.mainPageInformation.boxOffice,
+                    navigateMovieList = { context: Context ->
+                        mainUiState.value.navigateMovieList(context)
+                    },
+                    navigateMovieDetail = { context: Context, movieId: String ->
+                        mainUiState.value.navigateMovieDetail(context, movieId)
+                    }
+                )
 
-                    MovieFeedContainer(
-                        recommendMovie = mainUiState.value.mainPageInformation.recommandMovie,
-                        navigateMovieDetail = { context: Context, movieId: String ->
-                            mainUiState.value.navigateMovieDetail(context, movieId)
-                        }
-                    )
-                }
+                MovieFeedContainer(
+                    recommendMovie = mainUiState.value.mainPageInformation.recommandMovie,
+                    navigateMovieDetail = { context: Context, movieId: String ->
+                        mainUiState.value.navigateMovieDetail(context, movieId)
+                    }
+                )
             }
         }
     }
@@ -106,7 +108,7 @@ fun MainContainer (
 }
 
 @Composable
-fun MainContents (
+fun BoxOfficeMovieContainer (
     boxOffice: List<BoxOffice>,
     navigateMovieList: (Context) -> Unit,
     navigateMovieDetail: (Context, String) -> Unit,
@@ -124,42 +126,81 @@ fun MainContents (
             contentPadding = PaddingValues(end = 20.dp),
         ) {
             items(count = boxOffice.size) {
-                if(it + 1 != 15) {
-                    Column(
+                Column(
+                    modifier = Modifier
+                        .border(1.dp, MaterialTheme.colors.LightGray, RoundedCornerShape(15.dp))
+                ) {
+                    GlideImage(
+                        imageModel = { "${boxOffice[it].poster}" },
                         modifier = Modifier
-                            .border(1.dp, MaterialTheme.colors.LightGray, RoundedCornerShape(15.dp))
+                            .width(150.dp)
+                            .height(250.dp)
+                            .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
+                            .clickable {
+                                navigateMovieDetail(context, boxOffice[it].movieId)
+                            }
+                    )
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(5.dp),
+                        modifier = Modifier
+                            .width(150.dp)
+                            .height(100.dp)
+                            .clip(RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp))
+                            .padding(top = 10.dp, start = 12.dp, end = 10.dp)
                     ) {
-                        GlideImage(
-                            imageModel = { "${boxOffice[it].poster}" },
-                            modifier = Modifier
-                                .width(150.dp)
-                                .height(250.dp)
-                                .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
-                                .clickable {
-                                    navigateMovieDetail(context, boxOffice[it].movieId)
-                                }
+                        Text(
+                            text ="${boxOffice[it].titleKr}",
+                            fontSize = 15.sp,
+                            overflow = TextOverflow.Ellipsis,
+                            maxLines = 1
                         )
-                        Column(
-                            verticalArrangement = Arrangement.spacedBy(10.dp),
-                            modifier = Modifier
-                                .width(150.dp)
-                                .height(100.dp)
-                                .clip(RoundedCornerShape(bottomStart = 15.dp, bottomEnd = 15.dp))
-                                .padding(top = 18.dp, start = 12.dp, end = 12.dp)
+
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(5.dp)
                         ) {
-                            Text("${boxOffice[it].titleKr}")
-                            Box(
-                                contentAlignment = Alignment.Center,
-                                modifier = Modifier
-                                    .width(85.dp)
-                                    .height(30.dp)
-                                    .background(MaterialTheme.colors.LightBlue, RoundedCornerShape(8.dp))
+                            Text(
+                                text = "예매율 22.7%",
+                                color = MaterialTheme.colors.LightGray,
+                                fontSize = 13.sp
+                            )
+
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
                             ) {
-                                Text(text = "바로예매", color = Color.White)
+                                IconView(
+                                    painter = painterResource(id = R.drawable.icon_star_empty),
+                                    description = "${R.drawable.icon_star_empty}",
+                                    tint = MaterialTheme.colors.Purple,
+                                    size = 14
+                                )
+                                Text(
+                                    text = "9.5",
+                                    color = MaterialTheme.colors.LightGray,
+                                    fontSize = 13.sp
+                                )
                             }
                         }
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .width(85.dp)
+                                .height(30.dp)
+                                .background(
+                                    MaterialTheme.colors.LightBlue,
+                                    RoundedCornerShape(8.dp)
+                                )
+                        ) {
+                            Text(
+                                text = "바로예매",
+                                color = Color.White,
+                                fontSize = 14.sp
+                            )
+                        }
                     }
-                } else {
+                }
+
+                if(it + 1 == 15) {
                     Box(
                         contentAlignment = Alignment.Center,
                         modifier = Modifier
@@ -228,13 +269,16 @@ fun MovieFeedContainer (
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .height(300.dp)
+                .height(260.dp)
                 .clip(RoundedCornerShape(10.dp))
                 .clickable {
                     navigateMovieDetail(context, recommendMovie._id)
                 }
         ) {
-            GlideImage(imageModel = { recommendMovie.posterBg })
+            GlideImage(
+                imageModel = { recommendMovie.posterBg },
+                imageOptions = ImageOptions(contentScale = ContentScale.Crop)
+            )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -248,8 +292,12 @@ fun MovieFeedContainer (
                 Box(modifier = Modifier
                     .clip(CircleShape)
                     .size(35.dp)
-                    .border(1.dp, Color.Red, CircleShape)
-                )
+                ) {
+                    GlideImage(
+                        imageModel = { recommendMovie.posterBg  },
+                        imageOptions = ImageOptions(contentScale = ContentScale.Crop)
+                    )
+                }
                 Column(
                     modifier = Modifier
                         .fillMaxWidth(0.85f)
@@ -260,7 +308,7 @@ fun MovieFeedContainer (
                         fontSize = 15.sp
                     )
                     Text(
-                        text = "description",
+                        text = "RECOMMEND HOT MOVIE",
                         color = MaterialTheme.colors.LightGray,
                         fontSize = 15.sp
                     )
@@ -271,26 +319,3 @@ fun MovieFeedContainer (
     }
 }
 
-@Composable
-fun EventContainer () {
-    LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(20.dp),
-        contentPadding = PaddingValues(start = 20.dp, end = 20.dp)
-    ) {
-        items(count = 10) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .width(70.dp)
-                    .height(95.dp)
-                    .border(
-                        width = 1.dp,
-                        color = Color.White,
-                        shape = RoundedCornerShape(50.dp)
-                    )
-            ) {
-                Text(text = "test text", color = Color.White)
-            }
-        }
-    }
-}
