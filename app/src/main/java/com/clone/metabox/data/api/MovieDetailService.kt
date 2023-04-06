@@ -5,6 +5,6 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface MovieDetailService {
-    @GET("api/v1/movie/{movieId}")
+    @GET("movie/{movieId}")
     suspend fun getMovieDetail (@Path("movieId") movieId: String): MovieDetailResponse
 }

@@ -45,11 +45,11 @@ class MovieListViewModel @Inject constructor(
     }
 
     private fun loadMoreMovieList () = viewModelScope.launch {
-        addOffset()
+        _movieListUiState.value = _movieListUiState.value.copy(
+            offset = _movieListUiState.value.offset + 20
+        )
 
         getMovieListUseCase(_movieListUiState.value.offset).collectLatest {
-            Timber.d("get movie list $it")
-
             if(it is Result.Success) {
                 _movieListUiState.value = _movieListUiState.value.copy(
                     movieList = _movieListUiState.value.movieList.copy(
@@ -58,12 +58,6 @@ class MovieListViewModel @Inject constructor(
                 )
             }
         }
-    }
-
-    private fun addOffset () {
-        _movieListUiState.value = _movieListUiState.value.copy(
-            offset = _movieListUiState.value.offset + 20
-        )
     }
 
     private fun navigateMovieDetail (context: Context, movieId: String) {

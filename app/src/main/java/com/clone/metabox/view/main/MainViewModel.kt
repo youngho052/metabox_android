@@ -38,9 +38,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun getMainPageInformation() = viewModelScope.launch {
-        println("check api result ")
         getMainPageUseCase(Unit).collectLatest {
-            println("check api result $it")
             if(it is Result.Success) {
                 _mainUiState.value = _mainUiState.value.copy(
                     mainPageInformation = it.data
