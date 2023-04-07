@@ -1,9 +1,8 @@
-package com.clone.metabox.view.theater
+package com.clone.metabox.view.theaterselect
 
 import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,18 +17,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.clone.metabox.view.main.IconBox
 import com.clone.metabox.R
 import com.clone.metabox.ui.theme.LightBlue
-import com.clone.metabox.ui.theme.LightGray
 import com.clone.metabox.view.common.CommonLine
 import com.clone.metabox.view.common.IconView
 
 @Composable
 fun TheaterSelectContainer (
-    theaterViewModel: TheaterViewModel
+    theaterSelectViewModel: TheaterSelectViewModel
 ) {
-    val theaterUiState = theaterViewModel.theaterUiState.collectAsState()
+    val theaterUiState = theaterSelectViewModel.theaterUiState.collectAsState()
 
     Column(
         modifier = Modifier
