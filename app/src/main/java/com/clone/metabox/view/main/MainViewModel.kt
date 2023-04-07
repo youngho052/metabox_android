@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.clone.metabox.MovieDetailActivity
 import com.clone.metabox.MovieListActivity
-import com.clone.metabox.TheaterActivity
+import com.clone.metabox.TheaterSelectActivity
 import com.clone.metabox.domain.auth.KakaoLoginUseCase
 import com.clone.metabox.domain.main.GetMainPageUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -61,7 +61,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun navigateTheaterInfo (context: Context) {
-        val intent = Intent(context, TheaterActivity::class.java)
+        val intent = Intent(context, TheaterSelectActivity::class.java)
 
         context.startActivity(intent)
     }

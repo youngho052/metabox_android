@@ -1,9 +1,7 @@
 package com.clone.metabox.view.theater
 
-import android.content.Context
-import android.content.Intent
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.clone.metabox.TheaterDetailActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,26 +9,21 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TheaterViewModel @Inject constructor(
-
+    private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
-    private val _theaterUiState: MutableStateFlow<TheaterUiState> =
+    companion object {
+        const val THEATER_NAME = "theaterName"
+        const val THEATER_ID = "theaterId"
+    }
+
+    private val _theaterDetailUiState: MutableStateFlow<TheaterUiState> =
         MutableStateFlow(TheaterUiState())
-    val theaterUiState: StateFlow<TheaterUiState>
-        get() = _theaterUiState
+    val theaterDetailUiState: StateFlow<TheaterUiState>
+        get() = _theaterDetailUiState
 
     init {
-        _theaterUiState.value = _theaterUiState.value.copy(
-            navigateTheaterDetail = { context, theaterName -> navigateTheaterDetail(context,theaterName) }
+        _theaterDetailUiState.value = _theaterDetailUiState.value.copy(
+            theaterName = savedStateHandle.get<String>(THEATER_NAME) ?: ""
         )
-    }
-    private fun navigateTheaterDetail (
-        context: Context,
-        theaterName: String,
-    ) {
-        val intent = Intent(context, TheaterDetailActivity::class.java)
-
-        intent.putExtra("theaterName", theaterName)
-
-        context.startActivity(intent)
     }
 }
