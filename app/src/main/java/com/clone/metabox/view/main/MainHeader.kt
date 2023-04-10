@@ -13,7 +13,9 @@ import com.clone.metabox.view.common.IconView
 import com.clone.metabox.R
 
 @Composable
-fun MainHeader () {
+fun MainHeader (
+    contentTitle: String,
+) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
@@ -27,7 +29,7 @@ fun MainHeader () {
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            Text("MetaBox",color = Color.White)
+            Text("$contentTitle",color = Color.White)
         }
 
         Row(

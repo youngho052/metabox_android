@@ -18,8 +18,9 @@ import com.clone.metabox.R
 
 @Composable
 fun MainFooter (
-    navigateTheaterInfo: () -> Unit,
-    navigateMovieList: () -> Unit,
+    navigateToTheaterInfo: () -> Unit,
+    navigateToMovieList: () -> Unit,
+    navigateToBooking: () -> Unit,
 ) {
     Box(
         contentAlignment = Alignment.BottomCenter,
@@ -42,19 +43,22 @@ fun MainFooter (
                 imagePainter = painterResource(id = R.drawable.icon_movie_black),
                 category = "영화",
                 modifier = Modifier.clickable {
-                    navigateMovieList()
+                    navigateToMovieList()
                 }
             )
             IconBox(
                 imagePainter = painterResource(id = R.drawable.icon_theater_black),
                 category = "극장",
                 modifier = Modifier.clickable {
-                    navigateTheaterInfo()
+                    navigateToTheaterInfo()
                 }
             )
             IconBox(
                 imagePainter = painterResource(id = R.drawable.icon_calendar_black),
-                category = "예매"
+                category = "예매",
+                modifier = Modifier.clickable {
+                    navigateToBooking()
+                }
             )
             IconBox(
                 imagePainter = painterResource(id = R.drawable.icon_profile_black),

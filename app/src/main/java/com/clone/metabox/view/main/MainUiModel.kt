@@ -7,8 +7,9 @@ import com.clone.metabox.data.api.response.PopUp
 import com.clone.metabox.data.api.response.RecommendMovie
 
 data class MainUiModel (
+    val mainPageInformation: MainPageResponse = MainPageResponse(),
     val navigateMovieList: (Context) -> Unit = {},
     val navigateMovieDetail: (Context, String) -> Unit = { context, movieId -> },
     val navigateTheaterInfo: (Context) -> Unit = {},
-    val mainPageInformation: MainPageResponse = MainPageResponse()
+    val navigateBooking: (Context) -> Unit = {},
 )

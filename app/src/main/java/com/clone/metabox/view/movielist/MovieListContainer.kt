@@ -180,11 +180,15 @@ fun MovieListContainer (
             Column(
                 verticalArrangement = Arrangement.spacedBy(5.dp)
             ) {
+                MovieInformationForm(
+                    title = "연령",
+                    information = "${movies.grade}세 이용가",
+                )
                 MovieInformationForm(title = "예매율", "55%")
                 MovieInformationForm(title = "개봉일", information = "${movies.openingDate}")
                 MovieInformationForm(
                     title = "실관람평",
-                    information = "${movies.grade}",
+                    information = "8.5",
                     color = MaterialTheme.colors.LightBlue
                 )
             }
