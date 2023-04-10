@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.clone.metabox.R
 import com.clone.metabox.data.api.response.BoxOffice
 import com.clone.metabox.data.api.response.RecommendMovie
@@ -41,7 +42,7 @@ import timber.log.Timber
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainContainer (
-    mainViewModel: MainViewModel
+    mainViewModel: MainViewModel,
 ) {
     val mainUiState = mainViewModel.mainUiState.collectAsState()
     val context = LocalContext.current
@@ -57,7 +58,9 @@ fun MainContainer (
             .padding(bottom = 50.dp)
     ) {
         stickyHeader {
-            MainHeader()
+            MainHeader(
+                contentTitle = "metaBox"
+            )
         }
 
         item {
@@ -101,10 +104,11 @@ fun MainContainer (
         }
     }
 
-    MainFooter(
-        navigateTheaterInfo = { mainUiState.value.navigateTheaterInfo(context) },
-        navigateMovieList = { mainUiState.value.navigateMovieList(context) },
-    )
+//    MainFooter(
+//        navigateToTheaterInfo = { mainUiState.value.navigateTheaterInfo(context) },
+//        navigateToMovieList = { mainUiState.value.navigateMovieList(context) },
+//        navigateToBooking = { mainUiState.value.navigateBooking(context) }
+//    )
 }
 
 @Composable
