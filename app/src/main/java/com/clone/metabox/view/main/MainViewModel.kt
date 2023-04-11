@@ -2,8 +2,10 @@ package com.clone.metabox.view.main
 
 import android.content.Context
 import android.content.Intent
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.clone.metabox.BookingActivity
 import com.clone.metabox.MovieDetailActivity
 import com.clone.metabox.MovieListActivity
@@ -32,6 +34,8 @@ class MainViewModel @Inject constructor(
 
     private val navigatePages: NavigatePages = NavigatePages()
 
+    val mainPageState = mutableStateOf<String>(MainPageNavGraph.home)
+
     init {
         _mainUiState.value = _mainUiState.value.copy(
             navigateMovieList = { context -> navigatePages.navigateMovieList(context) },
@@ -50,6 +54,17 @@ class MainViewModel @Inject constructor(
                     mainPageInformation = it.data
                 )
             }
+        }
+    }
+
+    fun navigateToPageState (
+        navController: NavController,
+        pageState: String
+    ) {
+        mainPageState.value = pageState
+
+        navController.navigate(pageState) {
+            popUpTo(0)
         }
     }
 

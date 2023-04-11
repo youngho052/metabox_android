@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,12 +16,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.clone.metabox.view.common.IconView
 import com.clone.metabox.R
+import com.clone.metabox.ui.theme.LightBlue
 
 @Composable
 fun MainFooter (
+    pageState: String,
     navigateToTheaterInfo: () -> Unit,
     navigateToMovieList: () -> Unit,
     navigateToBooking: () -> Unit,
+    navigateToHome: () -> Unit,
 ) {
     Box(
         contentAlignment = Alignment.BottomCenter,
@@ -38,6 +42,11 @@ fun MainFooter (
             IconBox(
                 imagePainter = painterResource(id = R.drawable.icon_home_black),
                 category = "홈",
+                tint = if(pageState == MainPageNavGraph.home) MaterialTheme.colors.LightBlue else Color.Unspecified,
+                fontColor = if(pageState == MainPageNavGraph.home) MaterialTheme.colors.LightBlue else Color.Black,
+                modifier = Modifier.clickable {
+                    navigateToHome()
+                }
             )
             IconBox(
                 imagePainter = painterResource(id = R.drawable.icon_movie_black),
@@ -56,6 +65,8 @@ fun MainFooter (
             IconBox(
                 imagePainter = painterResource(id = R.drawable.icon_calendar_black),
                 category = "예매",
+                tint = if(pageState == MainPageNavGraph.booking) MaterialTheme.colors.LightBlue else Color.Unspecified,
+                fontColor = if(pageState == MainPageNavGraph.booking) MaterialTheme.colors.LightBlue else Color.Black,
                 modifier = Modifier.clickable {
                     navigateToBooking()
                 }
@@ -73,6 +84,7 @@ fun IconBox (
     imagePainter: Painter,
     category: String,
     tint: Color = Color.Unspecified,
+    fontColor: Color = Color.Black,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -87,7 +99,7 @@ fun IconBox (
         )
         Text(
             text = "$category",
-            color = Color.Black,
+            color = fontColor,
             fontSize = 11.sp
         )
     }

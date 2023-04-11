@@ -61,7 +61,7 @@ fun BookingContainer() {
         }
     }
     
-    MainHeader(contentTitle = "예매")
+//    MainHeader(contentTitle = "예매")
 //    MainFooter(
 //        navigateToTheaterInfo = { /*TODO*/ },
 //        navigateToMovieList = { /*TODO*/ },

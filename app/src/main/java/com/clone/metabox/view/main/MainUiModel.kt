@@ -8,6 +8,7 @@ import com.clone.metabox.data.api.response.RecommendMovie
 
 data class MainUiModel (
     val mainPageInformation: MainPageResponse = MainPageResponse(),
+    val mainPageState: String = MainPageNavGraph.home,
     val navigateMovieList: (Context) -> Unit = {},
     val navigateMovieDetail: (Context, String) -> Unit = { context, movieId -> },
     val navigateTheaterInfo: (Context) -> Unit = {},

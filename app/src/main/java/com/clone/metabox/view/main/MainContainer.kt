@@ -47,10 +47,10 @@ fun MainContainer (
     val mainUiState = mainViewModel.mainUiState.collectAsState()
     val context = LocalContext.current
 
-    GlideImage(
-        imageModel = { "https://img.megabox.co.kr/static/mb/images/common/bg/bg-origin.png" },
-        modifier = Modifier.fillMaxSize()
-    )
+//    GlideImage(
+//        imageModel = { "https://img.megabox.co.kr/static/mb/images/common/bg/bg-origin.png" },
+//        modifier = Modifier.fillMaxSize()
+//    )
 
     LazyColumn(
         modifier = Modifier
@@ -103,12 +103,6 @@ fun MainContainer (
             }
         }
     }
-
-//    MainFooter(
-//        navigateToTheaterInfo = { mainUiState.value.navigateTheaterInfo(context) },
-//        navigateToMovieList = { mainUiState.value.navigateMovieList(context) },
-//        navigateToBooking = { mainUiState.value.navigateBooking(context) }
-//    )
 }
 
 @Composable
