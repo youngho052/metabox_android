@@ -12,18 +12,22 @@ import androidx.navigation.compose.rememberNavController
 import com.clone.metabox.util.NavigatePages
 import com.clone.metabox.view.booking.BookingContainer
 import com.clone.metabox.view.main.*
+import com.clone.metabox.view.movielist.MovieListNavState
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val mainViewModel: MainViewModel by viewModels()
+
+    @Inject
+    lateinit var navigatePages: NavigatePages
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
             val navController = rememberNavController()
-            val navigatePages = NavigatePages()
 
             NavHost(
                 navController = navController,
@@ -32,18 +36,21 @@ class MainActivity : ComponentActivity() {
                 composable(MainPageNavGraph.home) {
                     MainContainer(
                         mainViewModel = mainViewModel,
+                        navigatePages = navigatePages
                     )
                 }
 
                 composable(MainPageNavGraph.booking) {
-                    MainBookingContainer()
+                    MainBookingContainer(
+                        navigatePages = navigatePages
+                    )
                 }
             }
 
             MainFooter(
                 pageState = mainViewModel.mainPageState.value,
-                navigateToTheaterInfo = { navigatePages.navigateTheaterInfo(this) },
-                navigateToMovieList = { navigatePages.navigateMovieList(this) },
+                navigateToTheaterInfo = { navigatePages.navigateTheaterInfo() },
+                navigateToMovieList = { navigatePages.navigateMovieList(MovieListNavState.movieDetail) },
                 navigateToBooking = {
                     navigatePages.navigateToPageState(
                         navController,

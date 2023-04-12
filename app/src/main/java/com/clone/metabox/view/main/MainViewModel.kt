@@ -32,18 +32,9 @@ class MainViewModel @Inject constructor(
     val mainUiState: StateFlow<MainUiModel>
         get() = _mainUiState
 
-    private val navigatePages: NavigatePages = NavigatePages()
-
     val mainPageState = mutableStateOf<String>(MainPageNavGraph.home)
 
     init {
-        _mainUiState.value = _mainUiState.value.copy(
-            navigateMovieList = { context -> navigatePages.navigateMovieList(context) },
-            navigateMovieDetail = { context, movieId -> navigatePages.navigateMovieDetail(context, movieId) },
-            navigateTheaterInfo = { context -> navigatePages.navigateTheaterInfo(context) },
-            navigateBooking = { context -> navigatePages.navigateBooking(context)  }
-        )
-
         getMainPageInformation()
     }
 
@@ -54,17 +45,6 @@ class MainViewModel @Inject constructor(
                     mainPageInformation = it.data
                 )
             }
-        }
-    }
-
-    fun navigateToPageState (
-        navController: NavController,
-        pageState: String
-    ) {
-        mainPageState.value = pageState
-
-        navController.navigate(pageState) {
-            popUpTo(0)
         }
     }
 

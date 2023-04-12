@@ -2,6 +2,7 @@ package com.clone.metabox.view.movielist
 
 import android.content.Context
 import android.content.Intent
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.clone.metabox.MovieDetailActivity
@@ -14,10 +15,13 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 import com.clone.metabox.result.Result
+import com.clone.metabox.util.NavigatePages
 
 @HiltViewModel
 class MovieListViewModel @Inject constructor(
-    private val getMovieListUseCase: GetMovieListUseCase
+    private val getMovieListUseCase: GetMovieListUseCase,
+    private val savedStateHandle: SavedStateHandle,
+    private val navigatePages: NavigatePages
 ): ViewModel() {
     private val _movieListUiState: MutableStateFlow<MovieListUiState> =
         MutableStateFlow(MovieListUiState())
@@ -25,10 +29,17 @@ class MovieListViewModel @Inject constructor(
     val movieListUiState: StateFlow<MovieListUiState>
         get() = _movieListUiState
 
+    companion object {
+        const val MOVIE_NAV_STATE = "movieNavToState"
+    }
+
+    val movieNavToState: String
+        get() = savedStateHandle.get<String>(MOVIE_NAV_STATE) ?: ""
+
     init {
         _movieListUiState.value = _movieListUiState.value.copy(
             loadMoreMovieList = { loadMoreMovieList() },
-            navigateMovieDetail = { context, movieId -> navigateMovieDetail(context, movieId) }
+            navigateToMovieDetail = { movieId -> navigatePages.navigateMovieDetail(movieId) }
         )
 
         getMovieList()
@@ -58,13 +69,5 @@ class MovieListViewModel @Inject constructor(
                 )
             }
         }
-    }
-
-    private fun navigateMovieDetail (context: Context, movieId: String) {
-        val intent = Intent(context, MovieDetailActivity::class.java)
-
-        intent.putExtra("movieId", movieId)
-
-        context.startActivity(intent)
     }
 }

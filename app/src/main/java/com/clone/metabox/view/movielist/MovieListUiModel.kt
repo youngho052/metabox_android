@@ -7,5 +7,6 @@ data class MovieListUiState (
     val movieList: MovieListResponse = MovieListResponse(),
     val offset: Int = 0,
     val loadMoreMovieList: () -> Unit = {},
-    val navigateMovieDetail: (Context, String) -> Unit = { context, movieId -> }
+    val navigateToMovieDetail: (String) -> Unit = {},
+//    val navigateMovieDetail: (String) -> Unit = { context, movieId -> }
 )

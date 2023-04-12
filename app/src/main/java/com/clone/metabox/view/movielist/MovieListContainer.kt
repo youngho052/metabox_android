@@ -4,9 +4,13 @@ import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
@@ -19,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.clone.metabox.data.api.response.MovieListResponse
@@ -43,30 +48,73 @@ fun MovieListContainer(
 
     val listState = rememberLazyListState()
 
-    LazyColumn(
-        state = listState,
-        verticalArrangement = Arrangement.spacedBy(25.dp)
-    ) {
-        stickyHeader {
-            MovieListHeader()
-        }
-
-        items(count = movieListUiState.value.movieList.movies.size) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(25.dp),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(start = 20.dp, end = 20.dp)
+    when(movieListViewModel.movieNavToState) {
+        "movieDetail" ->
+            LazyColumn(
+                state = listState,
+                verticalArrangement = Arrangement.spacedBy(25.dp)
             ) {
-                MovieListContainer(
-                    movies = movieListUiState.value.movieList.movies[it],
-                    rank = it + 1,
-                    navigateMovieDetail = { context, movieId -> movieListUiState.value.navigateMovieDetail(context, movieId) }
-                )
-                CommonLine(color = MaterialTheme.colors.Gray)
+                stickyHeader {
+                    MovieListHeader()
+                }
+
+                items(count = movieListUiState.value.movieList.movies.size) {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(25.dp),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(start = 20.dp, end = 20.dp)
+                    ) {
+                        MovieListContainer(
+                            movies = movieListUiState.value.movieList.movies[it],
+                            rank = it + 1,
+                            navigateToMovieDetail = { movieId -> movieListUiState.value.navigateToMovieDetail(movieId) }
+                        )
+                        CommonLine(color = MaterialTheme.colors.Gray)
+                    }
+                }
             }
-        }
+        "movieBooking" ->
+            Column() {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(55.dp)
+                ){
+                    Text("영화 선택")
+                }
+                LazyVerticalGrid(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalArrangement = Arrangement.spacedBy(30.dp),
+                    contentPadding = PaddingValues(top = 20.dp, start = 18.dp, end = 18.dp),
+                    columns = GridCells.Adaptive(minSize = 120.dp),
+                ) {
+                    items(count = movieListUiState.value.movieList.movies.size) {
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(10.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                        ) {
+                            GlideImage(
+                                imageModel = { movieListUiState.value.movieList.movies[it].poster },
+                                imageOptions = ImageOptions(contentScale = ContentScale.Crop),
+                                modifier = Modifier
+                                    .width(120.dp)
+                                    .height(170.dp)
+                            )
+                            Text(
+                                text = "${movieListUiState.value.movieList.movies[it].titleKr}",
+                                fontSize = 13.sp,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+                }
+            }
+
     }
+
 
     if (
         movieListUiState.value.movieList.movies.isNotEmpty() &&
@@ -76,7 +124,6 @@ fun MovieListContainer(
             movieListUiState.value.loadMoreMovieList()
         }
     }
-
 }
 
 @Composable
@@ -132,7 +179,7 @@ fun MovieListHeader() {
 fun MovieListContainer (
     movies: Movies,
     rank: Int,
-    navigateMovieDetail: (Context, String) -> Unit
+    navigateToMovieDetail: (String) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -142,7 +189,7 @@ fun MovieListContainer (
             .fillMaxSize()
             .height(155.dp)
             .clickable {
-                navigateMovieDetail(context, movies.movieId)
+                navigateToMovieDetail(movies.movieId)
             }
     ) {
         Box(

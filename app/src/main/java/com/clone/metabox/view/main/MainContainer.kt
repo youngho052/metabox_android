@@ -34,7 +34,9 @@ import com.clone.metabox.ui.theme.Gray
 import com.clone.metabox.ui.theme.LightBlue
 import com.clone.metabox.ui.theme.LightGray
 import com.clone.metabox.ui.theme.Purple
+import com.clone.metabox.util.NavigatePages
 import com.clone.metabox.view.common.IconView
+import com.clone.metabox.view.movielist.MovieListNavState
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
 import timber.log.Timber
@@ -43,9 +45,9 @@ import timber.log.Timber
 @Composable
 fun MainContainer (
     mainViewModel: MainViewModel,
+    navigatePages: NavigatePages
 ) {
     val mainUiState = mainViewModel.mainUiState.collectAsState()
-    val context = LocalContext.current
 
 //    GlideImage(
 //        imageModel = { "https://img.megabox.co.kr/static/mb/images/common/bg/bg-origin.png" },
@@ -86,18 +88,18 @@ fun MainContainer (
             ) {
                 BoxOfficeMovieContainer(
                     boxOffice = mainUiState.value.mainPageInformation.boxOffice,
-                    navigateMovieList = { context: Context ->
-                        mainUiState.value.navigateMovieList(context)
+                    navigateMovieList = {
+                        navigatePages.navigateMovieList(MovieListNavState.movieDetail)
                     },
-                    navigateMovieDetail = { context: Context, movieId: String ->
-                        mainUiState.value.navigateMovieDetail(context, movieId)
+                    navigateMovieDetail = { movieId: String ->
+                        navigatePages.navigateMovieDetail(movieId)
                     }
                 )
 
                 MovieFeedContainer(
                     recommendMovie = mainUiState.value.mainPageInformation.recommandMovie,
-                    navigateMovieDetail = { context: Context, movieId: String ->
-                        mainUiState.value.navigateMovieDetail(context, movieId)
+                    navigateMovieDetail = { movieId: String ->
+                        navigatePages.navigateMovieDetail(movieId)
                     }
                 )
             }
@@ -108,8 +110,8 @@ fun MainContainer (
 @Composable
 fun BoxOfficeMovieContainer (
     boxOffice: List<BoxOffice>,
-    navigateMovieList: (Context) -> Unit,
-    navigateMovieDetail: (Context, String) -> Unit,
+    navigateMovieList: () -> Unit,
+    navigateMovieDetail: (String) -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -135,7 +137,7 @@ fun BoxOfficeMovieContainer (
                             .height(250.dp)
                             .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
                             .clickable {
-                                navigateMovieDetail(context, boxOffice[it].movieId)
+                                navigateMovieDetail(boxOffice[it].movieId)
                             }
                     )
                     Column(
@@ -205,7 +207,7 @@ fun BoxOfficeMovieContainer (
                             .width(150.dp)
                             .height(300.dp)
                             .clickable {
-                                navigateMovieList(context)
+                                navigateMovieList()
                             }
                     ) {
                         Column(
@@ -241,7 +243,7 @@ fun BoxOfficeMovieContainer (
             color = MaterialTheme.colors.Gray,
             modifier = Modifier
                 .clickable {
-                    navigateMovieList(context)
+                    navigateMovieList()
                 }
         )
     }
@@ -250,7 +252,7 @@ fun BoxOfficeMovieContainer (
 @Composable
 fun MovieFeedContainer (
     recommendMovie: RecommendMovie,
-    navigateMovieDetail: (Context, String) -> Unit
+    navigateMovieDetail: (String) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -270,7 +272,7 @@ fun MovieFeedContainer (
                 .height(260.dp)
                 .clip(RoundedCornerShape(10.dp))
                 .clickable {
-                    navigateMovieDetail(context, recommendMovie._id)
+                    navigateMovieDetail(recommendMovie._id)
                 }
         ) {
             GlideImage(

@@ -5,3 +5,4 @@ object MainPageNavGraph {
     const val booking = "booking"
     const val myPage = "myPage"
 }
+
