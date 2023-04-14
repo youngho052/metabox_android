@@ -52,6 +52,9 @@ fun MainBookingContainer(
             BookingContentsBox(
                 summary = "어느 곳에서 \n보고 싶으세요?",
                 title = "극장별 예매",
+                modifier = Modifier.clickable {
+                    navigatePages.navigateMultiTheaterSelector(null)
+                }
             )
             BookingContentsBox(
                 summary = "어떤 영화를 \n보고 싶으세요?",

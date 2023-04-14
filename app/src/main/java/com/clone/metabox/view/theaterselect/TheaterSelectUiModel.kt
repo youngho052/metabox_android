@@ -1,8 +1,10 @@
 package com.clone.metabox.view.theaterselect
 
-import android.content.Context
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 
 data class TheaterSelectUiState (
-    val navigateTheaterDetail: (Context, String) -> Unit = { context, theaterName -> }
+    val navigateToTheaterDetail: (String) -> Unit = {},
+    val theaterList: SnapshotStateList<String> = mutableStateListOf()
 )
 

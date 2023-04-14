@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
 
             MainFooter(
                 pageState = mainViewModel.mainPageState.value,
-                navigateToTheaterInfo = { navigatePages.navigateTheaterInfo() },
+                navigateToTheaterInfo = { navigatePages.navigateSingleTheaterSelector() },
                 navigateToMovieList = { navigatePages.navigateMovieList(MovieListNavState.movieDetail) },
                 navigateToBooking = {
                     navigatePages.navigateToPageState(
