@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.clone.metabox.R
 import com.clone.metabox.util.NavigatePages
-import com.clone.metabox.view.booking.BookingContents
 import com.clone.metabox.view.common.IconView
 import com.clone.metabox.view.movielist.MovieListNavState
 import com.skydoves.landscapist.glide.GlideImage

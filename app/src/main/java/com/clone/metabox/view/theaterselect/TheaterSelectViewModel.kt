@@ -36,9 +36,12 @@ class TheaterSelectViewModel @Inject constructor(
 
     val theaterList: SnapshotStateList<String> = mutableStateListOf()
 
+    val navigateToPage
+        get() = navigatePages
+
     init {
         _theaterUiState.value = _theaterUiState.value.copy(
-            navigateToTheaterDetail = { theaterName -> navigatePages.navigateTheaterDetail(theaterName) }
+            navigateToTheaterDetail = { theaterName -> navigatePages.navigateTheaterDetail(theaterName) },
         )
     }
 

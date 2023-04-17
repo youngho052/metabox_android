@@ -67,9 +67,14 @@ class NavigatePages @Inject constructor(
         context.startActivity(intent)
     }
 
-    fun navigateBooking () {
+    fun navigateBooking (
+        theaterId: String,
+        theaterName: ArrayList<String>
+    ) {
         val intent = Intent(context, BookingActivity::class.java)
 
+        intent.putExtra("theaterId", theaterId)
+        intent.putStringArrayListExtra("theaterName", theaterName)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
         context.startActivity(intent)

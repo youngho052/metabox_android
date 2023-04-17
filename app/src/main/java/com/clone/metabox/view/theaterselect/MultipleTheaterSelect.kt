@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -46,7 +47,11 @@ fun MultipleTheaterSelect(
     }
 
     MultiplyTheaterFooter(
-        theaterList = theaterSelectViewModel.theaterList
+        theaterList = theaterSelectViewModel.theaterList,
+        navigateToBooking = {
+                theaterId: String, theaterName: ArrayList<String> ->
+                    theaterSelectViewModel.navigateToPage.navigateBooking(theaterId, theaterName)
+        }
     )
 }
 
@@ -186,11 +191,12 @@ fun MultiSelectorTheaterList (
             .background(Color(0xFFF5F5F5))
     ) {
         if(theaterList.isNotEmpty()) {
-            Row(
+            LazyRow(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                contentPadding = PaddingValues(start = 18.dp, end = 18.dp)
             ) {
-                repeat(theaterList.size) {
+                items(count = theaterList.size) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(3.dp, Alignment.CenterHorizontally),
@@ -219,7 +225,6 @@ fun MultiSelectorTheaterList (
                     }
                 }
             }
-
         } else {
             Text("최대 극장 3개까지 선택 가능 합니다.")
         }
@@ -228,8 +233,15 @@ fun MultiSelectorTheaterList (
 
 @Composable
 fun MultiplyTheaterFooter (
-    theaterList: SnapshotStateList<String>
+    theaterList: SnapshotStateList<String>,
+    navigateToBooking: (String, ArrayList<String>) -> Unit,
 ) {
+    val arrayList: ArrayList<String> = arrayListOf()
+
+    theaterList.filter {
+        arrayList.add(it)
+    }
+
     Box(
         contentAlignment = Alignment.BottomCenter,
         modifier = Modifier
@@ -241,9 +253,15 @@ fun MultiplyTheaterFooter (
             modifier = Modifier
                 .let {
                     if (theaterList.isNotEmpty()) {
-                        Modifier.background(MaterialTheme.colors.LightPurple)
+                        Modifier
+                            .background(MaterialTheme.colors.LightPurple)
+                            .onClick {
+                                navigateToBooking("das", arrayList)
+                            }
                     } else {
-                        Modifier.background(Color(0xFFCCCCCC))
+                        Modifier
+                            .background(Color(0xFFCCCCCC))
+                            .onClick { }
                     }
                 }
                 .fillMaxWidth()

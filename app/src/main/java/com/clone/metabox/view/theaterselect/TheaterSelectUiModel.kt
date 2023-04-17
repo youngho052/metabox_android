@@ -4,7 +4,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 
 data class TheaterSelectUiState (
+    val theaterList: SnapshotStateList<String> = mutableStateListOf(),
     val navigateToTheaterDetail: (String) -> Unit = {},
-    val theaterList: SnapshotStateList<String> = mutableStateListOf()
+    val navigateToBooking: (String) -> Unit = {},
 )
 
