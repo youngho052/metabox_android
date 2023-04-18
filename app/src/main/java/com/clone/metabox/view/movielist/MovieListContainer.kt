@@ -165,7 +165,7 @@ fun NavigateToBookingList (
         LazyVerticalGrid(
             horizontalArrangement = Arrangement.SpaceAround,
             verticalArrangement = Arrangement.spacedBy(30.dp),
-            contentPadding = PaddingValues(top = 20.dp, start = 18.dp, end = 18.dp),
+            contentPadding = PaddingValues(top = 20.dp, start = 18.dp, end = 18.dp, bottom = 20.dp),
             columns = GridCells.Adaptive(minSize = 110.dp),
             state = listState
         ) {

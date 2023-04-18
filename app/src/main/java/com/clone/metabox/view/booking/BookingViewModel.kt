@@ -13,6 +13,9 @@ class BookingViewModel @Inject constructor(
     val theaterName: ArrayList<String>
         get() = savedStateHandle.get<ArrayList<String>>("theaterName")?: arrayListOf()
 
+    val bookingType: String
+        get() = savedStateHandle.get<String>("bookingType")?: ""
+
     init {
         Timber.d("check theater name $theaterName")
     }

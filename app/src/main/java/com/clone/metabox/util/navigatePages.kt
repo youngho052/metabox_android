@@ -17,6 +17,7 @@ import javax.inject.Singleton
 class NavigatePages @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
+    private lateinit var bookingTypes: String
     fun navigateMovieList (listState: String) {
         val intent = Intent(context, MovieListActivity::class.java)
 
@@ -45,10 +46,13 @@ class NavigatePages @Inject constructor(
     }
 
     fun navigateMultiTheaterSelector (
-        movieId: String?
+        movieId: String?,
+        bookingType: String,
     ) {
         val intent = Intent(context, TheaterSelectActivity::class.java)
+        bookingTypes = bookingType
 
+        intent.putExtra("bookingType", bookingTypes)
         intent.putExtra("theaterState", "multiply")
         intent.putExtra("theaterMovieId", movieId)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -75,6 +79,7 @@ class NavigatePages @Inject constructor(
 
         intent.putExtra("theaterId", theaterId)
         intent.putStringArrayListExtra("theaterName", theaterName)
+        intent.putExtra("bookingType", bookingTypes)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
         context.startActivity(intent)

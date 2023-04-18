@@ -12,10 +12,11 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun CommonLine (
     color: Color,
+    height: Int = 1
 ) {
     Box(modifier = Modifier
         .fillMaxWidth()
-        .height(1.dp)
+        .height(height.dp)
         .background(color)
     )
 }

@@ -40,7 +40,7 @@ class MovieListViewModel @Inject constructor(
         _movieListUiState.value = _movieListUiState.value.copy(
             loadMoreMovieList = { loadMoreMovieList() },
             navigateToMovieDetail = { movieId -> navigatePages.navigateMovieDetail(movieId) },
-            navigateToTheaterSelector = { movieId -> navigatePages.navigateMultiTheaterSelector(movieId) }
+            navigateToTheaterSelector = { movieId -> navigatePages.navigateMultiTheaterSelector(movieId, "movie") }
         )
 
         getMovieList()
