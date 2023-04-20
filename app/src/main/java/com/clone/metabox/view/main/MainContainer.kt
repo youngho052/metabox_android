@@ -37,6 +37,7 @@ import com.clone.metabox.ui.theme.Purple
 import com.clone.metabox.util.NavigatePages
 import com.clone.metabox.view.common.IconView
 import com.clone.metabox.view.movielist.MovieListNavState
+import com.clone.metabox.view.movielist.onClick
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
 import timber.log.Timber
@@ -48,11 +49,6 @@ fun MainContainer (
     navigatePages: NavigatePages
 ) {
     val mainUiState = mainViewModel.mainUiState.collectAsState()
-
-//    GlideImage(
-//        imageModel = { "https://img.megabox.co.kr/static/mb/images/common/bg/bg-origin.png" },
-//        modifier = Modifier.fillMaxSize()
-//    )
 
     LazyColumn(
         modifier = Modifier
@@ -88,11 +84,14 @@ fun MainContainer (
             ) {
                 BoxOfficeMovieContainer(
                     boxOffice = mainUiState.value.mainPageInformation.boxOffice,
-                    navigateMovieList = {
+                    navigateToMovieList = {
                         navigatePages.navigateMovieList(MovieListNavState.movieDetail)
                     },
-                    navigateMovieDetail = { movieId: String ->
+                    navigateToMovieDetail = { movieId: String ->
                         navigatePages.navigateMovieDetail(movieId)
+                    },
+                    navigateToMultiTheaterSelector = { movieId: String, bookingType: String ->
+                        navigatePages.navigateMultiTheaterSelector(movieId, bookingType)
                     }
                 )
 
@@ -110,11 +109,10 @@ fun MainContainer (
 @Composable
 fun BoxOfficeMovieContainer (
     boxOffice: List<BoxOffice>,
-    navigateMovieList: () -> Unit,
-    navigateMovieDetail: (String) -> Unit,
+    navigateToMovieList: () -> Unit,
+    navigateToMovieDetail: (String) -> Unit,
+    navigateToMultiTheaterSelector: (String, String) -> Unit,
 ) {
-    val context = LocalContext.current
-
     Column(
         verticalArrangement = Arrangement.spacedBy(15.dp),
         modifier = Modifier
@@ -137,7 +135,7 @@ fun BoxOfficeMovieContainer (
                             .height(250.dp)
                             .clip(RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp))
                             .clickable {
-                                navigateMovieDetail(boxOffice[it].movieId)
+                                navigateToMovieDetail(boxOffice[it].movieId)
                             }
                     )
                     Column(
@@ -190,6 +188,9 @@ fun BoxOfficeMovieContainer (
                                     MaterialTheme.colors.LightBlue,
                                     RoundedCornerShape(8.dp)
                                 )
+                                .onClick {
+                                    navigateToMultiTheaterSelector(boxOffice[it].movieId, "movie")
+                                }
                         ) {
                             Text(
                                 text = "바로예매",
@@ -207,7 +208,7 @@ fun BoxOfficeMovieContainer (
                             .width(150.dp)
                             .height(300.dp)
                             .clickable {
-                                navigateMovieList()
+                                navigateToMovieList()
                             }
                     ) {
                         Column(
@@ -243,7 +244,7 @@ fun BoxOfficeMovieContainer (
             color = MaterialTheme.colors.Gray,
             modifier = Modifier
                 .clickable {
-                    navigateMovieList()
+                    navigateToMovieList()
                 }
         )
     }
@@ -254,8 +255,6 @@ fun MovieFeedContainer (
     recommendMovie: RecommendMovie,
     navigateMovieDetail: (String) -> Unit
 ) {
-    val context = LocalContext.current
-
     Column(
         verticalArrangement = Arrangement.spacedBy(20.dp),
         modifier = Modifier

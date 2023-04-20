@@ -2,6 +2,7 @@ package com.clone.metabox.util
 
 import android.content.Context
 import android.content.Intent
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -18,11 +19,20 @@ class NavigatePages @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
     private lateinit var bookingTypes: String
+    companion object {
+        const val SINGLE_SELECTOR = "single"
+        const val MULTIPLY_SELECTOR = "multiply"
+    }
+
+    private fun addIntentFlags (intent: Intent) {
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    }
+
     fun navigateMovieList (listState: String) {
         val intent = Intent(context, MovieListActivity::class.java)
 
         intent.putExtra("movieNavToState", listState)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        addIntentFlags(intent)
 
         context.startActivity(intent)
     }
@@ -31,7 +41,7 @@ class NavigatePages @Inject constructor(
         val intent = Intent(context, MovieDetailActivity::class.java)
 
         intent.putExtra("movieId", movieId)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        addIntentFlags(intent)
 
         context.startActivity(intent)
     }
@@ -39,8 +49,8 @@ class NavigatePages @Inject constructor(
     fun navigateSingleTheaterSelector () {
         val intent = Intent(context, TheaterSelectActivity::class.java)
 
-        intent.putExtra("theaterState", "single")
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.putExtra("theaterState", SINGLE_SELECTOR)
+        addIntentFlags(intent)
 
         context.startActivity(intent)
     }
@@ -53,9 +63,9 @@ class NavigatePages @Inject constructor(
         bookingTypes = bookingType
 
         intent.putExtra("bookingType", bookingTypes)
-        intent.putExtra("theaterState", "multiply")
+        intent.putExtra("theaterState", MULTIPLY_SELECTOR)
         intent.putExtra("theaterMovieId", movieId)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        addIntentFlags(intent)
 
         context.startActivity(intent)
     }
@@ -66,7 +76,7 @@ class NavigatePages @Inject constructor(
         val intent = Intent(context, TheaterActivity::class.java)
 
         intent.putExtra("theaterName", theaterName)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        addIntentFlags(intent)
 
         context.startActivity(intent)
     }
@@ -80,7 +90,7 @@ class NavigatePages @Inject constructor(
         intent.putExtra("theaterId", theaterId)
         intent.putStringArrayListExtra("theaterName", theaterName)
         intent.putExtra("bookingType", bookingTypes)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        addIntentFlags(intent)
 
         context.startActivity(intent)
     }
