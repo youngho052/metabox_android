@@ -13,8 +13,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.clone.metabox.R
+import com.clone.metabox.util.onClick
 import com.clone.metabox.view.common.IconView
-import com.clone.metabox.view.movielist.onClick
 
 @Composable
 fun TheaterSelectHeader () {

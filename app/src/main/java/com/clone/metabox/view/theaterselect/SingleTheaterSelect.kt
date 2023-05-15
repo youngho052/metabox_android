@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.clone.metabox.ui.theme.LightBlue
-import com.clone.metabox.view.common.CommonLine
+import com.clone.metabox.view.common.HorizontalLineView
 
 @Composable
 fun SingleTheaterSelect(
@@ -101,7 +101,7 @@ fun SingleTheaterListContainer (
                         fontSize = 14.sp
                     )
                 }
-                CommonLine(color = Color(0xFFE8E8E8))
+                HorizontalLineView(color = Color(0xFFE8E8E8))
             }
         }
     }

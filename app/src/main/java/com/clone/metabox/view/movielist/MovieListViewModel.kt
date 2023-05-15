@@ -1,27 +1,23 @@
 package com.clone.metabox.view.movielist
 
-import android.content.Context
-import android.content.Intent
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.clone.metabox.MovieDetailActivity
 import com.clone.metabox.domain.movie.GetMovieListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 import com.clone.metabox.result.Result
-import com.clone.metabox.util.NavigatePages
+import com.clone.metabox.util.RouteNavigation
 
 @HiltViewModel
 class MovieListViewModel @Inject constructor(
     private val getMovieListUseCase: GetMovieListUseCase,
     private val savedStateHandle: SavedStateHandle,
-    private val navigatePages: NavigatePages
+    private val routeNavigation: RouteNavigation
 ): ViewModel() {
     private val _movieListUiState: MutableStateFlow<MovieListUiState> =
         MutableStateFlow(MovieListUiState())
@@ -39,8 +35,8 @@ class MovieListViewModel @Inject constructor(
     init {
         _movieListUiState.value = _movieListUiState.value.copy(
             loadMoreMovieList = { loadMoreMovieList() },
-            navigateToMovieDetail = { movieId -> navigatePages.navigateMovieDetail(movieId) },
-            navigateToTheaterSelector = { movieId -> navigatePages.navigateMultiTheaterSelector(movieId, "movie") }
+            navigateToMovieDetail = { movieId -> routeNavigation.navigateMovieDetail(movieId) },
+            navigateToTheaterSelector = { movieId -> routeNavigation.navigateMultiTheaterSelector(movieId, "movie") }
         )
 
         getMovieList()

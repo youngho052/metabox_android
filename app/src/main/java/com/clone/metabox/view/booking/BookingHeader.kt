@@ -20,9 +20,9 @@ import com.clone.metabox.R
 import com.clone.metabox.ui.theme.DarkPurple
 import com.clone.metabox.ui.theme.LightGray
 import com.clone.metabox.ui.theme.LightPurple
+import com.clone.metabox.util.onClick
 import com.clone.metabox.view.common.AgeRestrictionBox
 import com.clone.metabox.view.common.IconView
-import com.clone.metabox.view.movielist.onClick
 
 @Composable
 fun BookingHeader(

@@ -2,20 +2,15 @@ package com.clone.metabox.util
 
 import android.content.Context
 import android.content.Intent
-import androidx.activity.ComponentActivity
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.clone.metabox.*
-import com.clone.metabox.view.main.MainPageNavGraph
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class NavigatePages @Inject constructor(
+class RouteNavigation @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
     private lateinit var bookingTypes: String

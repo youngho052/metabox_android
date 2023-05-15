@@ -5,9 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -15,16 +13,15 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.clone.metabox.ui.theme.LightBlue
 import com.clone.metabox.ui.theme.LightPurple
-import com.clone.metabox.view.common.CommonLine
+import com.clone.metabox.view.common.HorizontalLineView
 import com.clone.metabox.view.common.IconView
-import com.clone.metabox.view.movielist.onClick
 import com.clone.metabox.R
+import com.clone.metabox.util.onClick
 
 @Composable
 fun MultipleTheaterSelect(
@@ -133,7 +130,7 @@ fun MultipleTheaterListContainer (
                 }
 
                 if(list[count] !in theaterList){
-                    CommonLine(color = Color(0xFFE8E8E8))
+                    HorizontalLineView(color = Color(0xFFE8E8E8))
                 }
 
                 if(list.size == count +1 ) {

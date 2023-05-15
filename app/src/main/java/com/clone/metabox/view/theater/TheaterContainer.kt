@@ -24,8 +24,8 @@ import androidx.compose.ui.unit.sp
 import com.clone.metabox.R
 import com.clone.metabox.ui.theme.LightBlue
 import com.clone.metabox.ui.theme.LightGray
+import com.clone.metabox.view.common.IconTextView
 import com.clone.metabox.view.common.IconView
-import com.clone.metabox.view.main.IconBox
 import com.skydoves.landscapist.glide.GlideImage
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -132,7 +132,7 @@ fun TheaterDetailContainer () {
                 .shadow(elevation = 1.dp, spotColor = MaterialTheme.colors.LightGray)
                 .padding(top = 8.dp, bottom = 8.dp)
         ) {
-            IconBox(
+            IconTextView(
                 imagePainter = painterResource(id = R.drawable.icon_star_empty),
                 category = "선호극장"
             )
@@ -142,7 +142,7 @@ fun TheaterDetailContainer () {
                     .fillMaxHeight()
                     .background(MaterialTheme.colors.LightGray)
             )
-            IconBox(
+            IconTextView(
                 imagePainter = painterResource(id = R.drawable.icon_clock_black),
                 category = "상영시간표"
             )
@@ -152,7 +152,7 @@ fun TheaterDetailContainer () {
                     .fillMaxHeight()
                     .background(MaterialTheme.colors.LightGray)
             )
-            IconBox(
+            IconTextView(
                 imagePainter = painterResource(id = R.drawable.icon_movie_black),
                 category = "관람료"
             )

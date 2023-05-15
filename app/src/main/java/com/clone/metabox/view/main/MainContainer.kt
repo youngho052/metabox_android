@@ -1,6 +1,6 @@
 package com.clone.metabox.view.main
 
-import android.content.Context
+import android.webkit.WebViewClient
 import androidx.compose.foundation.background
 import androidx.compose.foundation.*
 import androidx.compose.foundation.border
@@ -16,17 +16,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.clone.metabox.R
 import com.clone.metabox.data.api.response.BoxOffice
 import com.clone.metabox.data.api.response.RecommendMovie
@@ -34,21 +30,33 @@ import com.clone.metabox.ui.theme.Gray
 import com.clone.metabox.ui.theme.LightBlue
 import com.clone.metabox.ui.theme.LightGray
 import com.clone.metabox.ui.theme.Purple
-import com.clone.metabox.util.NavigatePages
+import com.clone.metabox.util.RouteNavigation
+import com.clone.metabox.util.onClick
 import com.clone.metabox.view.common.IconView
 import com.clone.metabox.view.movielist.MovieListNavState
-import com.clone.metabox.view.movielist.onClick
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
-import timber.log.Timber
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainContainer (
     mainViewModel: MainViewModel,
-    navigatePages: NavigatePages
+    routeNavigation: RouteNavigation
 ) {
     val mainUiState = mainViewModel.mainUiState.collectAsState()
+    val context = LocalContext.current
+    val webViewClient = WebViewClient()
+
+//    AndroidView(
+//        factory = {
+//            WebView(context).apply {
+//                this.webViewClient = webViewClient
+//                this.loadUrl("https://m.naver.com/")
+//            }
+//        },
+//        modifier = Modifier.fillMaxSize()
+//    )
+
 
     LazyColumn(
         modifier = Modifier
@@ -85,20 +93,20 @@ fun MainContainer (
                 BoxOfficeMovieContainer(
                     boxOffice = mainUiState.value.mainPageInformation.boxOffice,
                     navigateToMovieList = {
-                        navigatePages.navigateMovieList(MovieListNavState.movieDetail)
+                        routeNavigation.navigateMovieList(MovieListNavState.movieDetail)
                     },
                     navigateToMovieDetail = { movieId: String ->
-                        navigatePages.navigateMovieDetail(movieId)
+                        routeNavigation.navigateMovieDetail(movieId)
                     },
                     navigateToMultiTheaterSelector = { movieId: String, bookingType: String ->
-                        navigatePages.navigateMultiTheaterSelector(movieId, bookingType)
+                        routeNavigation.navigateMultiTheaterSelector(movieId, bookingType)
                     }
                 )
 
                 MovieFeedContainer(
                     recommendMovie = mainUiState.value.mainPageInformation.recommandMovie,
                     navigateMovieDetail = { movieId: String ->
-                        navigatePages.navigateMovieDetail(movieId)
+                        routeNavigation.navigateMovieDetail(movieId)
                     }
                 )
             }
@@ -107,7 +115,7 @@ fun MainContainer (
 }
 
 @Composable
-fun BoxOfficeMovieContainer (
+private fun BoxOfficeMovieContainer (
     boxOffice: List<BoxOffice>,
     navigateToMovieList: () -> Unit,
     navigateToMovieDetail: (String) -> Unit,
@@ -251,7 +259,7 @@ fun BoxOfficeMovieContainer (
 }
 
 @Composable
-fun MovieFeedContainer (
+private fun MovieFeedContainer (
     recommendMovie: RecommendMovie,
     navigateMovieDetail: (String) -> Unit
 ) {

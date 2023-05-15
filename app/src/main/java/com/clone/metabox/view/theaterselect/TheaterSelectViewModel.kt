@@ -1,22 +1,18 @@
 package com.clone.metabox.view.theaterselect
 
-import android.content.Context
-import android.content.Intent
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.clone.metabox.TheaterActivity
-import com.clone.metabox.util.NavigatePages
+import com.clone.metabox.util.RouteNavigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class TheaterSelectViewModel @Inject constructor(
-    private val navigatePages: NavigatePages,
+    private val routeNavigation: RouteNavigation,
     private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
     private val _theaterUiState: MutableStateFlow<TheaterSelectUiState> =
@@ -37,11 +33,11 @@ class TheaterSelectViewModel @Inject constructor(
     val theaterList: SnapshotStateList<String> = mutableStateListOf()
 
     val navigateToPage
-        get() = navigatePages
+        get() = routeNavigation
 
     init {
         _theaterUiState.value = _theaterUiState.value.copy(
-            navigateToTheaterDetail = { theaterName -> navigatePages.navigateTheaterDetail(theaterName) },
+            navigateToTheaterDetail = { theaterName -> routeNavigation.navigateTheaterDetail(theaterName) },
         )
     }
 

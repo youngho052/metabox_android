@@ -12,8 +12,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -23,7 +21,6 @@ import androidx.compose.ui.unit.sp
 import com.clone.metabox.data.api.response.MovieDetailResponse
 import com.clone.metabox.ui.theme.*
 import com.skydoves.landscapist.glide.GlideImage
-import timber.log.Timber
 
 @Composable
 fun MovieDetailContainer(
@@ -44,10 +41,10 @@ fun MovieDetailContainer(
                     .background(Color(0XFF150C1C))
                     .padding(bottom = 50.dp)
             ) {
-                MovieDetailInformation(
+                MovieDetailSummaryView(
                     movieDetailInformation = movieDetailUiState.value.movieDetailInformation
                 )
-                MovieSectionContainer(
+                MovieDetailSectionContainer(
                     movieDetailInformation = movieDetailUiState.value.movieDetailInformation
                 )
             }
@@ -62,7 +59,7 @@ fun MovieDetailContainer(
 }
 
 @Composable
-fun MovieDetailInformation (
+private fun MovieDetailSummaryView (
     movieDetailInformation: MovieDetailResponse
 ) {
     val configuration = LocalConfiguration.current
@@ -164,7 +161,7 @@ fun MovieDetailInformation (
 }
 
 @Composable
-fun MovieDescriptionBox (
+private fun MovieDescriptionBox (
     summaryTitle: String,
     summaryDesc: String,
 ) {

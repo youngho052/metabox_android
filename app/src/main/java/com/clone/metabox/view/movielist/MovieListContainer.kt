@@ -3,11 +3,9 @@ package com.clone.metabox.view.movielist
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.*
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -17,73 +15,42 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.clone.metabox.data.api.response.MovieListResponse
 import com.clone.metabox.data.api.response.Movies
 import com.clone.metabox.ui.theme.Gray
 import com.clone.metabox.ui.theme.LightBlue
 import com.clone.metabox.ui.theme.LightGray
 import com.clone.metabox.util.OnBottomReached
-import com.clone.metabox.view.common.CommonLine
+import com.clone.metabox.view.common.HorizontalLineView
 import com.clone.metabox.view.common.IconView
 import com.skydoves.landscapist.glide.GlideImage
 import com.clone.metabox.R
+import com.clone.metabox.util.onClick
 import com.clone.metabox.view.common.AgeRestrictionBox
 import com.skydoves.landscapist.ImageOptions
-import dagger.hilt.android.qualifiers.ApplicationContext
-import timber.log.Timber
 
-@Composable
-fun Modifier.onClick (
-    enabled: Boolean = true,
-    onClickLabel: String? = null,
-    role: Role? = null,
-    onClick: () -> Unit
-) = composed(
-    inspectorInfo = debugInspectorInfo {
-        name = "onClick"
-        properties["enabled"] = enabled
-        properties["onClickLabel"] = onClickLabel
-        properties["role"] = role
-        properties["onClick"] = onClick
-    }
-) {
-    Modifier.clickable(
-        enabled = enabled,
-        onClickLabel = onClickLabel,
-        onClick = onClick,
-        role = role,
-        indication = null,
-        interactionSource = remember { MutableInteractionSource() }
-    )
-}
 @Composable
 fun MovieListContainer(
     movieListViewModel: MovieListViewModel
 ) {
     val movieListUiState = movieListViewModel.movieListUiState.collectAsState()
 
-    Timber.d("check movie list ${movieListUiState.value.movieList.movies.size}")
-
     when(movieListViewModel.movieNavToState) {
-        "movieDetail" -> NavigateToDetailList(movieListUiState)
-        "movieBooking" -> NavigateToBookingList(movieListUiState)
+        "movieDetail" -> MovieDetailListContainer(movieListUiState)
+        "movieBooking" -> MovieBookingListContainer(movieListUiState)
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun NavigateToDetailList (
+private fun MovieDetailListContainer (
     movieListUiState: State<MovieListUiState>
 ) {
     val listState = rememberLazyListState()
@@ -93,7 +60,7 @@ fun NavigateToDetailList (
         verticalArrangement = Arrangement.spacedBy(25.dp)
     ) {
         stickyHeader {
-            MovieListHeader()
+            MovieListContainerHeader()
         }
 
         items(count = movieListUiState.value.movieList.movies.size) {
@@ -103,12 +70,12 @@ fun NavigateToDetailList (
                     .fillMaxSize()
                     .padding(start = 20.dp, end = 20.dp)
             ) {
-                MovieListContainer(
+                MovieListView(
                     movies = movieListUiState.value.movieList.movies[it],
                     rank = it + 1,
                     navigateToMovieDetail = { movieId -> movieListUiState.value.navigateToMovieDetail(movieId) }
                 )
-                CommonLine(color = MaterialTheme.colors.Gray)
+                HorizontalLineView(color = MaterialTheme.colors.Gray)
             }
         }
     }
@@ -124,7 +91,7 @@ fun NavigateToDetailList (
 }
 
 @Composable
-fun NavigateToBookingList (
+private fun MovieBookingListContainer (
     movieListUiState: State<MovieListUiState>
 ) {
     val context = LocalContext.current as ComponentActivity
@@ -186,6 +153,12 @@ fun NavigateToBookingList (
                         GlideImage(
                             imageModel = { movieListUiState.value.movieList.movies[it].poster },
                             imageOptions = ImageOptions(contentScale = ContentScale.Crop),
+                            loading = {
+                                Box(modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(MaterialTheme.colors.LightGray)
+                                )
+                            }
                         )
 
                         Row(
@@ -219,57 +192,9 @@ fun NavigateToBookingList (
     }
 }
 
-@Composable
-fun MovieListHeader() {
-    val context = LocalContext.current as ComponentActivity
-
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .fillMaxSize()
-            .height(55.dp)
-            .background(Color.White)
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            Text(
-                text = "영화",
-                fontSize = 18.sp,
-                color = Color.Black
-            )
-        }
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(55.dp)
-                .padding(start = 18.dp, end = 18.dp)
-        ) {
-            IconView(
-                painter = painterResource(id = R.drawable.icon_back_black),
-                description = "${R.drawable.icon_back_black}",
-                tint = Color.Unspecified,
-                modifier = Modifier.onClick {
-                    context.finish()
-                }
-            )
-            IconView(
-                painter = painterResource(id = R.drawable.icon_menu_black),
-                description = "${R.drawable.icon_menu_black}",
-                tint = Color.Unspecified
-            )
-        }
-    }
-}
 
 @Composable
-fun MovieListContainer (
+private fun MovieListView (
     movies: Movies,
     rank: Int,
     navigateToMovieDetail: (String) -> Unit
@@ -294,6 +219,12 @@ fun MovieListContainer (
                 imageOptions = ImageOptions(
                     contentScale = ContentScale.Crop
                 ),
+                loading = {
+                    Box(modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colors.LightGray)
+                    )
+                }
             )
             Text(
                 text ="$rank",
@@ -328,13 +259,13 @@ fun MovieListContainer (
             Column(
                 verticalArrangement = Arrangement.spacedBy(5.dp)
             ) {
-                MovieInformationForm(
+                MovieInformationView(
                     title = "연령",
                     information = "${movies.grade}세 이용가",
                 )
-                MovieInformationForm(title = "예매율", "55%")
-                MovieInformationForm(title = "개봉일", information = "${movies.openingDate}")
-                MovieInformationForm(
+                MovieInformationView(title = "예매율", "55%")
+                MovieInformationView(title = "개봉일", information = "${movies.openingDate}")
+                MovieInformationView(
                     title = "실관람평",
                     information = "8.5",
                     color = MaterialTheme.colors.LightBlue
@@ -345,7 +276,7 @@ fun MovieListContainer (
 }
 
 @Composable
-fun MovieInformationForm (
+private fun MovieInformationView (
     title: String,
     information: String,
     color: Color = Color.Black

@@ -14,14 +14,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.clone.metabox.R
-import com.clone.metabox.util.NavigatePages
+import com.clone.metabox.util.RouteNavigation
 import com.clone.metabox.view.common.IconView
 import com.clone.metabox.view.movielist.MovieListNavState
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
 fun MainBookingContainer(
-    navigatePages: NavigatePages
+    routeNavigation: RouteNavigation
 ) {
     Box(
         modifier = Modifier
@@ -52,14 +52,14 @@ fun MainBookingContainer(
                 summary = "어느 곳에서 \n보고 싶으세요?",
                 title = "극장별 예매",
                 modifier = Modifier.clickable {
-                    navigatePages.navigateMultiTheaterSelector(null, "theater")
+                    routeNavigation.navigateMultiTheaterSelector(null, "theater")
                 }
             )
             BookingContentsBox(
                 summary = "어떤 영화를 \n보고 싶으세요?",
                 title = "영화별 예매",
                 modifier = Modifier.clickable {
-                    navigatePages.navigateMovieList(MovieListNavState.movieBooking)
+                    routeNavigation.navigateMovieList(MovieListNavState.movieBooking)
                 }
             )
         }
@@ -69,7 +69,7 @@ fun MainBookingContainer(
 }
 
 @Composable
-fun BookingContentsBox (
+private fun BookingContentsBox (
     summary: String,
     title: String,
     modifier: Modifier = Modifier

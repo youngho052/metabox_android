@@ -6,7 +6,7 @@ import com.clone.metabox.data.api.response.MainPageResponse
 import com.clone.metabox.data.api.response.PopUp
 import com.clone.metabox.data.api.response.RecommendMovie
 
-data class MainUiModel (
+data class MainUiState (
     val mainPageInformation: MainPageResponse = MainPageResponse(),
     val mainPageState: String = MainPageNavGraph.home,
 )

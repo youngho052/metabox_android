@@ -4,17 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.clone.metabox.util.NavigatePages
-import com.clone.metabox.view.booking.BookingContainer
+import com.clone.metabox.util.RouteNavigation
 import com.clone.metabox.view.main.*
 import com.clone.metabox.view.movielist.MovieListNavState
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -22,7 +18,7 @@ class MainActivity : ComponentActivity() {
     private val mainViewModel: MainViewModel by viewModels()
 
     @Inject
-    lateinit var navigatePages: NavigatePages
+    lateinit var routeNavigation: RouteNavigation
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -36,30 +32,30 @@ class MainActivity : ComponentActivity() {
                 composable(MainPageNavGraph.home) {
                     MainContainer(
                         mainViewModel = mainViewModel,
-                        navigatePages = navigatePages
+                        routeNavigation = routeNavigation
                     )
                 }
 
                 composable(MainPageNavGraph.booking) {
                     MainBookingContainer(
-                        navigatePages = navigatePages
+                        routeNavigation = routeNavigation
                     )
                 }
             }
 
             MainFooter(
                 pageState = mainViewModel.mainPageState.value,
-                navigateToTheaterInfo = { navigatePages.navigateSingleTheaterSelector() },
-                navigateToMovieList = { navigatePages.navigateMovieList(MovieListNavState.movieDetail) },
+                navigateToTheaterInfo = { routeNavigation.navigateSingleTheaterSelector() },
+                navigateToMovieList = { routeNavigation.navigateMovieList(MovieListNavState.movieDetail) },
                 navigateToBooking = {
-                    navigatePages.navigateToPageState(
+                    routeNavigation.navigateToPageState(
                         navController,
                         MainPageNavGraph.booking,
                         mainViewModel.mainPageState
                     )
                 },
                 navigateToHome = {
-                    navigatePages.navigateToPageState(
+                    routeNavigation.navigateToPageState(
                         navController,
                         MainPageNavGraph.home,
                         mainViewModel.mainPageState

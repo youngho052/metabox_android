@@ -1,7 +1,5 @@
 package com.clone.metabox.view.moviedetail
 
-import android.graphics.Paint.Align
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -18,18 +16,17 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.imageResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.clone.metabox.R
 import com.clone.metabox.data.api.response.MovieDetailResponse
 import com.clone.metabox.ui.theme.*
-import com.clone.metabox.view.common.CommonLine
+import com.clone.metabox.view.common.HorizontalLineView
 import com.clone.metabox.view.common.StarRatingBar
 
 @Composable
-fun MovieSectionContainer(
+fun MovieDetailSectionContainer(
     movieDetailInformation: MovieDetailResponse
 ) {
     var sectionState by remember { mutableStateOf("information") }
@@ -147,17 +144,17 @@ fun MovieInformation (
             .fillMaxSize()
             .padding(start = 18.dp, end = 18.dp)
     ) {
-        MovieInformationForm(title = "개봉", description = "${movieDetailInformation.openingDate}")
-        MovieInformationForm(title = "타입", description = "${movieDetailInformation.type}")
-        MovieInformationForm(title = "장르", description = "${movieDetailInformation.genre} / ${movieDetailInformation.runningTime} 분")
-        MovieInformationForm(title = "등급", description = "${movieDetailInformation.grade}세이상관람가")
-        CommonLine(MaterialTheme.colors.LightBlack)
-        MovieInformationForm(title = "감독", description = "신카이 마코토")
-        MovieInformationForm(
+        MovieInformationView(title = "개봉", description = "${movieDetailInformation.openingDate}")
+        MovieInformationView(title = "타입", description = "${movieDetailInformation.type}")
+        MovieInformationView(title = "장르", description = "${movieDetailInformation.genre} / ${movieDetailInformation.runningTime} 분")
+        MovieInformationView(title = "등급", description = "${movieDetailInformation.grade}세이상관람가")
+        HorizontalLineView(MaterialTheme.colors.LightBlack)
+        MovieInformationView(title = "감독", description = "신카이 마코토")
+        MovieInformationView(
             title = "출연",
             description = "하라 나노카(이와토 스즈메 역), 마츠무라 호쿠토(무나카타 소타 역), 후카츠 에리(이와토 타마키 역), 마츠모토하쿠오(무나카타히츠지로역), 소메타니 쇼타(오카베 미노루 역), 이토 사이리(니노미야 루미 역), 하나세 코토네(아마베 치카 역), 하나자와 카나(이와토 츠바메 역), 카미키 류노스케(세리자와 토모야 역)"
         )
-        CommonLine(MaterialTheme.colors.LightBlack)
+        HorizontalLineView(MaterialTheme.colors.LightBlack)
     }
 
     Row(
@@ -231,7 +228,7 @@ fun MovieInformation (
 }
 
 @Composable
-fun MovieInformationForm (
+private fun MovieInformationView (
     title: String,
     description: String
 ) {
@@ -328,13 +325,13 @@ fun ReviewsContainer () {
             .padding(top = 30.dp, start = 18.dp, end = 18.dp, bottom = 50.dp)
     ) {
         ReviewForm()
-        CommonLine(color = Color(0xFFE7E7E7))
+        HorizontalLineView(color = Color(0xFFE7E7E7))
         ReviewForm()
-        CommonLine(color = Color(0xFFE7E7E7))
+        HorizontalLineView(color = Color(0xFFE7E7E7))
         ReviewForm()
-        CommonLine(color = Color(0xFFE7E7E7))
+        HorizontalLineView(color = Color(0xFFE7E7E7))
         ReviewForm()
-        CommonLine(color = Color(0xFFE7E7E7))
+        HorizontalLineView(color = Color(0xFFE7E7E7))
     }
 }
 

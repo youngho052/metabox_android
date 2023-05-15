@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.sp
 import com.clone.metabox.ui.theme.LightBlack
 import com.clone.metabox.ui.theme.LightGray
 import com.clone.metabox.ui.theme.Purple
-import com.clone.metabox.view.common.CommonLine
+import com.clone.metabox.view.common.HorizontalLineView
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -37,7 +37,7 @@ fun BookingContainer(
                     .padding(top = 30.dp)
             ) {
                 BookingListContainer()
-                CommonLine(
+                HorizontalLineView(
                     color = Color(0xFFF5F5F5),
                     height = 10
                 )
