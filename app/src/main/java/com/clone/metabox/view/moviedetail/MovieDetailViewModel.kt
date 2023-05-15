@@ -3,6 +3,7 @@ package com.clone.metabox.view.moviedetail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.clone.metabox.data.api.response.MovieDetailResponse
 import com.clone.metabox.domain.movie.GetMovieDetailUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

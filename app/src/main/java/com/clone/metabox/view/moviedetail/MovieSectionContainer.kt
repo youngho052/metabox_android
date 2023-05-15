@@ -252,7 +252,7 @@ private fun MovieInformationView (
 }
 
 @Composable
-fun MovieReviews () {
+private fun MovieReviews () {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -315,7 +315,7 @@ fun MovieReviews () {
 }
 
 @Composable
-fun ReviewsContainer () {
+private fun ReviewsContainer () {
     Column(
         verticalArrangement = Arrangement.spacedBy(20.dp),
         modifier = Modifier
