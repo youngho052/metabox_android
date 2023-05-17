@@ -1,11 +1,10 @@
 package com.clone.metabox.view.theater
 
 import androidx.activity.ComponentActivity
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -22,8 +21,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.clone.metabox.R
+import com.clone.metabox.data.api.response.FloorInformation
 import com.clone.metabox.ui.theme.LightBlue
 import com.clone.metabox.ui.theme.LightGray
+import com.clone.metabox.view.common.HorizontalLineView
 import com.clone.metabox.view.common.IconTextView
 import com.clone.metabox.view.common.IconView
 import com.skydoves.landscapist.glide.GlideImage
@@ -38,7 +39,7 @@ fun TheaterContainer(
     LazyColumn() {
         stickyHeader {
             TheaterDetailHeader(
-                theaterName = theaterDetailUiState.value.theaterName
+                theaterName = theaterDetailUiState.value.theaterDetail.name
             )
         }
 
@@ -54,22 +55,43 @@ fun TheaterContainer(
                     .background(Color.White)
                     .padding(bottom = 50.dp)
             ) {
-                TheaterDetailContainer()
-                DivBox()
-                FacilitiesContainer()
-                DivBox()
-                FloorContainer()
-                DivBox()
-                AddressContainer()
-                DivBox()
-                ParkingContainer()
+                TheaterDescriptionContainer(
+                    theaterDescription = theaterDetailUiState.value.theaterDetail.description,
+                    theaterSubscription = theaterDetailUiState.value.theaterDetail.subscription
+                )
+                HorizontalLineView(
+                    color = Color(0xFFF5F5F5),
+                    height = 10
+                )
+                TheaterFacilitiesContainer(
+                    theaterFacilities = theaterDetailUiState.value.theaterDetail.facilities
+                )
+                HorizontalLineView(
+                    color = Color(0xFFF5F5F5),
+                    height = 10
+                )
+                TheaterFloorContainer(
+                    theaterFloorInformation = theaterDetailUiState.value.theaterDetail.floorInformation
+                )
+                HorizontalLineView(
+                    color = Color(0xFFF5F5F5),
+                    height = 10
+                )
+                TheaterAddressContainer(
+                    theaterAddress = theaterDetailUiState.value.theaterDetail.address
+                )
+                HorizontalLineView(
+                    color = Color(0xFFF5F5F5),
+                    height = 10
+                )
+                TheaterParkingContainer()
             }
         }
     }
 }
 
 @Composable
-fun TheaterDetailHeader(
+private fun TheaterDetailHeader(
     theaterName: String
 ) {
     val context = LocalContext.current as ComponentActivity
@@ -115,7 +137,10 @@ fun TheaterDetailHeader(
 }
 
 @Composable
-fun TheaterDetailContainer () {
+private fun TheaterDescriptionContainer (
+    theaterDescription: String,
+    theaterSubscription: String,
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(15.dp),
@@ -159,19 +184,19 @@ fun TheaterDetailContainer () {
         }
 
         Text(
-            text = "강남의 중심! 강남 소비문화의 중심지인 지하철 2호선 , 신분당선  - 강남역과 연결",
+            text = "$theaterDescription",
             color = MaterialTheme.colors.LightBlue,
             fontSize = 18.sp,
             textAlign = TextAlign.Center
         )
+//        Text(
+//            text = "로맨틱 멀티플렉스! 젊은 도시 강남이 한 눈에 보이는 최상의 View를 제공",
+//            color = Color.Black,
+//            fontSize = 18.sp,
+//            textAlign = TextAlign.Center
+//        )
         Text(
-            text = "로맨틱 멀티플렉스! 젊은 도시 강남이 한 눈에 보이는 최상의 View를 제공",
-            color = Color.Black,
-            fontSize = 18.sp,
-            textAlign = TextAlign.Center
-        )
-        Text(
-            text = "<프라다>가 선택한 수려한 디자인의 상영관 의자를 체험해보세요!",
+            text = "$theaterSubscription",
             color = Color.Black,
             fontSize = 13.sp,
             textAlign = TextAlign.Center,
@@ -181,7 +206,9 @@ fun TheaterDetailContainer () {
 }
 
 @Composable
-fun FacilitiesContainer () {
+private fun TheaterFacilitiesContainer (
+    theaterFacilities: List<String>
+) {
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier
@@ -192,11 +219,19 @@ fun FacilitiesContainer () {
             color = Color.Black,
             fontSize = 16.sp
         )
+
+        Text(
+            text ="${theaterFacilities.joinToString()}",
+            color = Color.Black,
+            fontSize = 15.sp
+        )
     }
 }
 
 @Composable
-fun FloorContainer () {
+fun TheaterFloorContainer (
+    theaterFloorInformation: List<FloorInformation>
+) {
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier
@@ -207,27 +242,26 @@ fun FloorContainer () {
             color = Color.Black,
             fontSize = 16.sp,
         )
-        DescriptionForm(
-            title = "8층",
-            description = "매표소, 매점, 에스컬레이터, 엘리베이터 , 남자 · 여자 화장실, 비상계단 3"
-        )
-        DescriptionForm(
-            title = "9층",
-            description = "1관, 2관, 남자 · 여자 화장실, 엘리베이터, 비상계단3"
-        )
-        DescriptionForm(
-            title = "10층",
-            description = "3관, 4관, 엘리베이터2, 남자 · 여자 화장실, 비상계단 3 "
-        )
-        DescriptionForm(
-            title = "11층",
-            description = "5관, 6관, 7관, 엘리베이터2, 남자 · 여자 화장실, 비상계단 3 "
-        )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(5.dp),
+            modifier = Modifier
+                .fillMaxWidth(1f)
+                .fillMaxHeight()
+        ) {
+            repeat(theaterFloorInformation.size) {
+                TheaterDescriptionView(
+                    title = "${theaterFloorInformation[it].floor}",
+                    description = "${theaterFloorInformation[it].information.joinToString()}"
+                )
+            }
+        }
     }
 }
 
 @Composable
-fun AddressContainer () {
+fun TheaterAddressContainer (
+    theaterAddress: String
+) {
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier
@@ -238,15 +272,15 @@ fun AddressContainer () {
             color = Color.Black,
             fontSize = 16.sp,
         )
-        DescriptionForm(
+        TheaterDescriptionView(
             title = "도로명 주소",
-            description = "서울특별시 서초구 서초대로 77길 3 (서초동) 아라타워 8층"
+            description = "$theaterAddress"
         )
     }
 }
 
 @Composable
-fun ParkingContainer () {
+fun TheaterParkingContainer () {
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier
@@ -257,15 +291,15 @@ fun ParkingContainer () {
             color = Color.Black,
             fontSize = 16.sp,
         )
-        DescriptionForm(
+        TheaterDescriptionView(
             title = "주차안내",
             description = "아라타워 건물 內 지하 3층 ~ 지하 6층 주차장 이용"
         )
-        DescriptionForm(
+        TheaterDescriptionView(
             title = "주차확인",
             description = "매표소에서 당일 관람 티켓 인증 후, 차량 번호 할인 등록하여 지하 정산소에서 결제"
         )
-        DescriptionForm(
+        TheaterDescriptionView(
             title = "주차요금",
             description = "주차 요금은 입차시간을 기준으로 합니다."
         )
@@ -273,7 +307,7 @@ fun ParkingContainer () {
 }
 
 @Composable
-fun DescriptionForm (
+private fun TheaterDescriptionView (
     title: String,
     description: String,
 ) {
@@ -292,12 +326,3 @@ fun DescriptionForm (
     }
 }
 
-@Composable
-fun DivBox () {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(10.dp)
-            .background(Color(0xFFF5F5F5))
-    )
-}

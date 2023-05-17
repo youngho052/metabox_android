@@ -4,15 +4,12 @@ import androidx.annotation.Keep
 
 @Keep
 data class TheaterResponse (
-    val test: String = "",
+    val state: String = "",
+    val items: List<Items> = listOf(Items())
 )
 @Keep
-data class Theaters (
-    val theaterMap: Map<String, List<TheaterInfo>>
+data class Items (
+    val theaterId: String = "",
+    val name: String = ""
 )
 
-@Keep
-data class TheaterInfo(
-    val theaterName: String = "",
-    val theaterId: String = ""
-)

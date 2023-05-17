@@ -66,11 +66,11 @@ class RouteNavigation @Inject constructor(
     }
 
     fun navigateTheaterDetail (
-        theaterName: String,
+        theaterId: String,
     ) {
         val intent = Intent(context, TheaterActivity::class.java)
 
-        intent.putExtra("theaterName", theaterName)
+        intent.putExtra("theaterId", theaterId)
         addIntentFlags(intent)
 
         context.startActivity(intent)

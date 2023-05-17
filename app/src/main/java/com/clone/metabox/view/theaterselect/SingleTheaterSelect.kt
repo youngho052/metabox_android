@@ -6,26 +6,31 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.clone.metabox.data.api.response.TheaterResponse
 import com.clone.metabox.ui.theme.LightBlue
+import com.clone.metabox.util.onClick
 import com.clone.metabox.view.common.HorizontalLineView
+import timber.log.Timber
 
 @Composable
-fun SingleTheaterSelect(
+fun SingleTheaterSelectContainer(
     theaterSelectUiState: State<TheaterSelectUiState>
 ) {
+    Timber.d("check theater information ${theaterSelectUiState.value.theaterInformation}")
+
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
         TheaterSelectHeader()
         SingleTheaterListContainer(
+            theaterInformation = theaterSelectUiState.value.theaterInformation,
             navigateToTheaterDetail = { theaterName: String ->
                 theaterSelectUiState.value.navigateToTheaterDetail(theaterName)
             },
@@ -34,40 +39,50 @@ fun SingleTheaterSelect(
 }
 
 @Composable
-fun SingleTheaterListContainer (
+private fun SingleTheaterListContainer (
+    theaterInformation: List<TheaterResponse>,
     navigateToTheaterDetail: (String) -> Unit,
 ) {
-    val list = listOf("강남", "강남대로(씨티)", "강동", "군자", "더 부티크 목동현대백화점", "동대문", "마곡", "목동", "상봉", "상암월드컵경기장"
-        ,"강남", "강남대로(씨티)", "강동", "군자", "더 부티크 목동현대백화점", "동대문", "마곡", "목동", "상봉", "상암월드컵경기장",
-        "강남", "강남대로(씨티)", "강동", "군자", "더 부티크 목동현대백화점", "동대문", "마곡", "목동", "상봉", "상암월드컵경기장")
+    var selectableTheaterIndex by remember { mutableStateOf(0) }
 
     Row(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxWidth(0.35f)
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(42.dp)
-                    .background(MaterialTheme.colors.LightBlue)
-                    .padding(start = 18.dp, end = 18.dp)
-            ) {
-                Text(
-                    text = "서울",
-                    color = Color.White,
-                    fontSize = 14.sp
-                )
-                Text(
-                    text = "10",
-                    color = Color.White,
-                    fontSize = 14.sp
-                )
+            items(count = theaterInformation.size) {count: Int ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier
+                        .let {
+                            if(count == selectableTheaterIndex) {
+                                it.background(MaterialTheme.colors.LightBlue)
+                            } else {
+                                it.background(Color.White)
+                            }
+                        }
+                        .fillMaxWidth()
+                        .height(42.dp)
+                        .padding(start = 18.dp, end = 18.dp)
+                        .onClick {
+                            selectableTheaterIndex = count
+                        }
+                ) {
+                    Text(
+                        text = "${theaterInformation[count].state}",
+                        color = if(count == selectableTheaterIndex) Color.White else Color.Black,
+                        fontSize = 14.sp
+                    )
+                    Text(
+                        text = "${theaterInformation[count].items.size}",
+                        color = if(count == selectableTheaterIndex) Color.White else Color.Black,
+                        fontSize = 14.sp
+                    )
+                }
             }
         }
 
@@ -82,7 +97,7 @@ fun SingleTheaterListContainer (
             modifier = Modifier
                 .fillMaxWidth(1f)
         ) {
-            items(count = list.size) { count ->
+            items(count = theaterInformation[selectableTheaterIndex].items.size) { count ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Start,
@@ -92,11 +107,13 @@ fun SingleTheaterListContainer (
                         .background(Color.White)
                         .padding(start = 18.dp, end = 18.dp)
                         .clickable {
-                            navigateToTheaterDetail(list[count])
+                            navigateToTheaterDetail(
+                                theaterInformation[selectableTheaterIndex].items[count].theaterId
+                            )
                         }
                 ) {
                     Text(
-                        text = "${list[count]}",
+                        text = "${theaterInformation[selectableTheaterIndex].items[count].name}",
                         color = Color.Black,
                         fontSize = 14.sp
                     )

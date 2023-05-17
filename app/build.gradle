@@ -22,7 +22,7 @@ android {
             useSupportLibrary true
         }
 
-        buildConfigField("String", "API_END_POINT", "\"http://3.35.11.118:3000/api/v1/\"")
+        buildConfigField("String", "API_END_POINT", "\"https://6d39-125-131-159-121.ngrok-free.app/api/v1/\"")
     }
 
     buildTypes {

@@ -1,5 +1,7 @@
 package com.clone.metabox.view.movielist
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,6 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.clone.metabox.result.Result
 import com.clone.metabox.util.RouteNavigation
+import timber.log.Timber
 
 @HiltViewModel
 class MovieListViewModel @Inject constructor(
@@ -29,6 +32,9 @@ class MovieListViewModel @Inject constructor(
         const val MOVIE_NAV_STATE = "movieNavToState"
     }
 
+    private val movieListOffset: MutableState<Int> =
+        mutableStateOf(0)
+
     val movieNavToState: String
         get() = savedStateHandle.get<String>(MOVIE_NAV_STATE) ?: ""
 
@@ -43,7 +49,7 @@ class MovieListViewModel @Inject constructor(
     }
 
     private fun getMovieList () = viewModelScope.launch {
-        getMovieListUseCase(_movieListUiState.value.offset).collectLatest {
+        getMovieListUseCase(movieListOffset.value).collectLatest {
             if(it is Result.Success) {
                 _movieListUiState.value = _movieListUiState.value.copy(
                     movieList = it.data
@@ -53,17 +59,20 @@ class MovieListViewModel @Inject constructor(
     }
 
     private fun loadMoreMovieList () = viewModelScope.launch {
-        _movieListUiState.value = _movieListUiState.value.copy(
-            offset = _movieListUiState.value.offset + 20
-        )
+        movieListOffset.value = movieListOffset.value + 24
 
-        getMovieListUseCase(_movieListUiState.value.offset).collectLatest {
-            if(it is Result.Success) {
-                _movieListUiState.value = _movieListUiState.value.copy(
-                    movieList = _movieListUiState.value.movieList.copy(
-                        movies = _movieListUiState.value.movieList.movies.plus(it.data.movies)
+        if(_movieListUiState.value.movieList.movies.isNotEmpty() &&
+            (_movieListUiState.value.movieList.moviesCount > _movieListUiState.value.movieList.movies.size)
+        ) {
+            getMovieListUseCase(movieListOffset.value).collectLatest {
+                if(it is Result.Success) {
+                    _movieListUiState.value = _movieListUiState.value.copy(
+                        movieList = _movieListUiState.value.movieList.copy(
+                            offset = it.data.offset,
+                            movies = _movieListUiState.value.movieList.movies.plus(it.data.movies)
+                        )
                     )
-                )
+                }
             }
         }
     }

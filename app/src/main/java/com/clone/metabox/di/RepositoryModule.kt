@@ -1,9 +1,6 @@
 package com.clone.metabox.di
 
-import com.clone.metabox.data.api.KaKaoLoginService
-import com.clone.metabox.data.api.MainPageService
-import com.clone.metabox.data.api.MovieDetailService
-import com.clone.metabox.data.api.MovieListService
+import com.clone.metabox.data.api.*
 import com.clone.metabox.data.auth.DefaultKaKaoLoginRepository
 import com.clone.metabox.data.auth.KakaoLoginRepository
 import com.clone.metabox.data.main.DefaultMainPageRepository
@@ -12,6 +9,10 @@ import com.clone.metabox.data.movie.DefaultMovieDetailRepository
 import com.clone.metabox.data.movie.DefaultMovieListRepository
 import com.clone.metabox.data.movie.MovieDetailRepository
 import com.clone.metabox.data.movie.MovieListRepository
+import com.clone.metabox.data.theater.DefaultTheaterDetailRepository
+import com.clone.metabox.data.theater.DefaultTheaterInformationRepository
+import com.clone.metabox.data.theater.TheaterDetailRepository
+import com.clone.metabox.data.theater.TheaterInformationRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,6 +46,26 @@ object RepositoryModule {
         service: MovieDetailService
     ): MovieDetailRepository {
         return DefaultMovieDetailRepository (
+            service
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun theaterInformationRepository (
+        service: TheaterInformationService
+    ): TheaterInformationRepository {
+        return DefaultTheaterInformationRepository (
+            service
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun theaterDetailRepository (
+        service: TheaterDetailService
+    ): TheaterDetailRepository {
+        return DefaultTheaterDetailRepository(
             service
         )
     }

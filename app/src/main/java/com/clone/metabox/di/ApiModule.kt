@@ -2,10 +2,7 @@ package com.clone.metabox.di
 
 import android.content.Context
 import com.clone.metabox.BuildConfig
-import com.clone.metabox.data.api.KaKaoLoginService
-import com.clone.metabox.data.api.MainPageService
-import com.clone.metabox.data.api.MovieDetailService
-import com.clone.metabox.data.api.MovieListService
+import com.clone.metabox.data.api.*
 import com.google.gson.GsonBuilder
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -49,6 +46,22 @@ object ApiModule {
         retrofit: Retrofit
     ): MovieDetailService {
         return retrofit.create(MovieDetailService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTheaterInformationService(
+        retrofit: Retrofit
+    ): TheaterInformationService {
+        return retrofit.create(TheaterInformationService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTheaterDetailService(
+        retrofit: Retrofit
+    ): TheaterDetailService {
+        return retrofit.create(TheaterDetailService::class.java)
     }
 
     @Provides

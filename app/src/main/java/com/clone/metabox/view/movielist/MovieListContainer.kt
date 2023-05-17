@@ -1,5 +1,6 @@
 package com.clone.metabox.view.movielist
 
+import android.annotation.SuppressLint
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.*
 import androidx.compose.foundation.clickable
@@ -35,6 +36,8 @@ import com.clone.metabox.R
 import com.clone.metabox.util.onClick
 import com.clone.metabox.view.common.AgeRestrictionBox
 import com.skydoves.landscapist.ImageOptions
+import okhttp3.internal.notifyAll
+import timber.log.Timber
 
 @Composable
 fun MovieListContainer(
@@ -57,7 +60,7 @@ private fun MovieDetailListContainer (
 
     LazyColumn(
         state = listState,
-        verticalArrangement = Arrangement.spacedBy(25.dp)
+        verticalArrangement = Arrangement.spacedBy(25.dp),
     ) {
         stickyHeader {
             MovieListContainerHeader()
@@ -80,10 +83,7 @@ private fun MovieDetailListContainer (
         }
     }
 
-    if (
-        movieListUiState.value.movieList.movies.isNotEmpty() &&
-        (movieListUiState.value.movieList.offset < movieListUiState.value.movieList.moviesCount)
-    ) {
+    if(movieListUiState.value.movieList.offset != 0) {
         listState.OnBottomReached {
             movieListUiState.value.loadMoreMovieList()
         }
@@ -182,10 +182,7 @@ private fun MovieBookingListContainer (
         }
     }
 
-    if (
-        movieListUiState.value.movieList.movies.isNotEmpty() &&
-        (movieListUiState.value.movieList.offset < movieListUiState.value.movieList.moviesCount)
-    ) {
+    if(movieListUiState.value.movieList.offset != 0) {
         listState.OnBottomReached {
             movieListUiState.value.loadMoreMovieList()
         }
