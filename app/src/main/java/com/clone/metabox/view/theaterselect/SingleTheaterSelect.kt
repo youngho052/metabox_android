@@ -16,13 +16,14 @@ import com.clone.metabox.data.api.response.TheaterResponse
 import com.clone.metabox.ui.theme.LightBlue
 import com.clone.metabox.util.onClick
 import com.clone.metabox.view.common.HorizontalLineView
+import com.clone.metabox.view.theater.TheaterViewModel
 import timber.log.Timber
 
 @Composable
 fun SingleTheaterSelectContainer(
-    theaterSelectUiState: State<TheaterSelectUiState>
+    theaterSelectViewModel: TheaterSelectViewModel,
 ) {
-    Timber.d("check theater information ${theaterSelectUiState.value.theaterInformation}")
+    val theaterSelectUiState = theaterSelectViewModel.theaterUiState.collectAsState()
 
     Column(
         modifier = Modifier

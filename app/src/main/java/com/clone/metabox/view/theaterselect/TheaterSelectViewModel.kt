@@ -5,6 +5,7 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.clone.metabox.data.api.response.TheaterItems
 import com.clone.metabox.domain.theater.GetTheaterInformationUseCase
 import com.clone.metabox.util.RouteNavigation
 import com.clone.metabox.result.Result
@@ -13,7 +14,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,7 +37,7 @@ class TheaterSelectViewModel @Inject constructor(
     private val theaterMovieId: String
         get() = savedStateHandle.get<String>("theaterMovieId") ?: ""
 
-    val theaterList: SnapshotStateList<String> = mutableStateListOf()
+    val theaterList: SnapshotStateList<TheaterItems> = mutableStateListOf()
 
     val navigateToPage
         get() = routeNavigation
@@ -60,21 +60,21 @@ class TheaterSelectViewModel @Inject constructor(
         }
     }
 
-    fun addTheaterList (theaterName: String) {
+    fun addTheaterInformationList (theaterItems: TheaterItems) {
         if(theaterList.size < 3) {
-            if(theaterName in theaterList) {
-                deleteTheaterList(theaterName)
+            if(theaterItems in theaterList) {
+                deleteTheaterInformationList(theaterItems)
             } else {
-                theaterList.add(theaterName)
+                theaterList.add(theaterItems)
             }
         } else if(theaterList.size == 3) {
-            if(theaterName in theaterList) {
-                deleteTheaterList(theaterName)
+            if(theaterItems in theaterList) {
+                deleteTheaterInformationList(theaterItems)
             }
         }
     }
 
-    fun deleteTheaterList (theaterName: String) {
-        theaterList.remove(theaterName)
+    fun deleteTheaterInformationList (theaterItems: TheaterItems) {
+        theaterList.remove(theaterItems)
     }
 }

@@ -8,11 +8,10 @@ import androidx.compose.runtime.collectAsState
 fun TheaterSelectContainer (
     theaterSelectViewModel: TheaterSelectViewModel
 ) {
-    val theaterSelectUiState = theaterSelectViewModel.theaterUiState.collectAsState()
     val scrollState = rememberScrollState()
 
     when(theaterSelectViewModel.theaterState) {
-        "single" -> SingleTheaterSelectContainer(theaterSelectUiState = theaterSelectUiState)
+        "single" -> SingleTheaterSelectContainer(theaterSelectViewModel = theaterSelectViewModel)
         "multiply" -> MultipleTheaterSelect(theaterSelectViewModel = theaterSelectViewModel)
     }
 }

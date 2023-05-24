@@ -8,7 +8,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,12 +21,17 @@ import com.clone.metabox.ui.theme.LightPurple
 import com.clone.metabox.view.common.HorizontalLineView
 import com.clone.metabox.view.common.IconView
 import com.clone.metabox.R
+import com.clone.metabox.data.api.response.TheaterItems
+import com.clone.metabox.data.api.response.TheaterResponse
 import com.clone.metabox.util.onClick
 
 @Composable
 fun MultipleTheaterSelect(
     theaterSelectViewModel: TheaterSelectViewModel
 ) {
+    val theaterSelectUiState = theaterSelectViewModel.theaterUiState.collectAsState()
+
+    theaterSelectUiState.value.theaterInformation
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -34,60 +39,75 @@ fun MultipleTheaterSelect(
         TheaterSelectHeader()
         MultiSelectorTheaterList(
             theaterList = theaterSelectViewModel.theaterList,
-            deleteTheaterList = { theaterName: String -> theaterSelectViewModel.deleteTheaterList(theaterName) }
+            deleteTheaterList = {
+                    theaterItems: TheaterItems -> theaterSelectViewModel.deleteTheaterInformationList(theaterItems)
+            }
         )
 
         MultipleTheaterListContainer(
             theaterList = theaterSelectViewModel.theaterList,
-            addTheaterList = { theaterName: String -> theaterSelectViewModel.addTheaterList(theaterName) }
+            theaterInformation  = theaterSelectUiState.value.theaterInformation,
+            addTheaterList = {
+                    theaterItems: TheaterItems -> theaterSelectViewModel.addTheaterInformationList(theaterItems)
+            }
         )
     }
 
     MultiplyTheaterFooter(
         theaterList = theaterSelectViewModel.theaterList,
         navigateToBooking = {
-                theaterId: String, theaterName: ArrayList<String> ->
-                    theaterSelectViewModel.navigateToPage.navigateBooking(theaterId, theaterName)
+            theaterList: List<TheaterItems> ->
+                theaterSelectViewModel.navigateToPage.navigateBooking(theaterList)
         }
     )
 }
 
 @Composable
 fun MultipleTheaterListContainer (
-    theaterList: SnapshotStateList<String>,
-    addTheaterList: (String) -> Unit,
+    theaterList: SnapshotStateList<TheaterItems>,
+    theaterInformation: List<TheaterResponse>,
+    addTheaterList: (TheaterItems) -> Unit,
 ) {
-    val list = listOf("강남", "강남대로(씨티)", "강동", "군자", "더 부티크 목동현대백화점", "동대문", "마곡", "목동", "상봉", "상암월드컵경기장"
-        ,"강남", "강남대로(씨티)", "강동", "군자", "더 부티크 목동현대백화점", "동대문", "마곡", "목동", "상봉", "상암월드컵경기장",
-        "강남", "강남대로(씨티)", "강동", "군자", "더 부티크 목동현대백화점", "동대문", "마곡", "목동", "상봉", "상암월드컵경기장")
+    var selectableTheaterIndex by remember { mutableStateOf(0) }
 
     Row(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxWidth(0.35f)
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(42.dp)
-                    .background(MaterialTheme.colors.LightBlue)
-                    .padding(start = 18.dp, end = 18.dp)
-            ) {
-                Text(
-                    text = "서울",
-                    color = Color.White,
-                    fontSize = 14.sp
-                )
-                Text(
-                    text = "10",
-                    color = Color.White,
-                    fontSize = 14.sp
-                )
+            items(count = theaterInformation.size) {count: Int ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier
+                        .let {
+                            if(count == selectableTheaterIndex) {
+                                it.background(MaterialTheme.colors.LightBlue)
+                            } else {
+                                it.background(Color.White)
+                            }
+                        }
+                        .fillMaxWidth()
+                        .height(42.dp)
+                        .padding(start = 18.dp, end = 18.dp)
+                        .onClick {
+                            selectableTheaterIndex = count
+                        }
+                ) {
+                    Text(
+                        text = "${theaterInformation[count].state}",
+                        color = if(count == selectableTheaterIndex) Color.White else Color.Black,
+                        fontSize = 14.sp
+                    )
+                    Text(
+                        text = "${theaterInformation[count].items.size}",
+                        color = if(count == selectableTheaterIndex) Color.White else Color.Black,
+                        fontSize = 14.sp
+                    )
+                }
             }
         }
 
@@ -102,13 +122,15 @@ fun MultipleTheaterListContainer (
             modifier = Modifier
                 .fillMaxWidth(1f)
         ) {
-            items(count = list.size) { count ->
+            items(count = theaterInformation[selectableTheaterIndex].items.size) { count ->
+                val itemsInformation = theaterInformation[selectableTheaterIndex].items[count]
+
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Start,
                     modifier = Modifier
                         .let {
-                            if (list[count] in theaterList) {
+                            if (itemsInformation in theaterList) {
                                 Modifier.background(MaterialTheme.colors.LightBlue)
                             } else {
                                 Modifier.background(Color.White)
@@ -117,25 +139,27 @@ fun MultipleTheaterListContainer (
                         .fillMaxWidth()
                         .height(42.dp)
                         .clickable {
-                            addTheaterList(list[count])
+                            addTheaterList(
+                                theaterInformation[selectableTheaterIndex].items[count]
+                            )
                         }
                 ) {
                     Text(
-                        text = "${list[count]}",
-                        color = if(list[count] in theaterList) { Color.White } else { Color.Black },
+                        text = "${itemsInformation.name}",
+                        color = if(itemsInformation in theaterList) { Color.White } else { Color.Black },
                         fontSize = 14.sp,
                         modifier = Modifier
                             .padding(start = 18.dp, end = 18.dp)
                     )
                 }
 
-                if(list[count] !in theaterList){
+                if(count != selectableTheaterIndex){
                     HorizontalLineView(color = Color(0xFFE8E8E8))
                 }
 
-                if(list.size == count +1 ) {
-                    Box(modifier = Modifier.height(50.dp))
-                }
+//                if(list.size == count + 1) {
+//                    Box(modifier = Modifier.height(50.dp))
+//                }
             }
         }
 
@@ -176,8 +200,8 @@ fun MultipleTheaterListContainer (
 
 @Composable
 fun MultiSelectorTheaterList (
-    theaterList: SnapshotStateList<String>,
-    deleteTheaterList: (String) -> Unit
+    theaterList: SnapshotStateList<TheaterItems>,
+    deleteTheaterList: (TheaterItems) -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -207,7 +231,7 @@ fun MultiSelectorTheaterList (
                             }
                     ) {
                         Text(
-                            text = "${theaterList[it]}",
+                            text = "${theaterList[it].name}",
                             color = Color.White,
                             fontSize = 15.sp,
                             modifier = Modifier
@@ -230,14 +254,14 @@ fun MultiSelectorTheaterList (
 
 @Composable
 fun MultiplyTheaterFooter (
-    theaterList: SnapshotStateList<String>,
-    navigateToBooking: (String, ArrayList<String>) -> Unit,
+    theaterList: SnapshotStateList<TheaterItems>,
+    navigateToBooking: (List<TheaterItems>) -> Unit,
 ) {
-    val arrayList: ArrayList<String> = arrayListOf()
-
-    theaterList.filter {
-        arrayList.add(it)
-    }
+//    val arrayList: ArrayList<TheaterItems> = arrayListOf()
+//
+//    theaterList.filter {
+//        arrayList.add(it)
+//    }
 
     Box(
         contentAlignment = Alignment.BottomCenter,
@@ -253,7 +277,7 @@ fun MultiplyTheaterFooter (
                         Modifier
                             .background(MaterialTheme.colors.LightPurple)
                             .onClick {
-                                navigateToBooking("das", arrayList)
+                                navigateToBooking(theaterList.toList())
                             }
                     } else {
                         Modifier

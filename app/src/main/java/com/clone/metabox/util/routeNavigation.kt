@@ -3,9 +3,12 @@ package com.clone.metabox.util
 import android.content.Context
 import android.content.Intent
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.toMutableStateList
 import androidx.navigation.NavController
 import com.clone.metabox.*
+import com.clone.metabox.data.api.response.TheaterItems
 import dagger.hilt.android.qualifiers.ApplicationContext
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,6 +21,9 @@ class RouteNavigation @Inject constructor(
         const val SINGLE_SELECTOR = "single"
         const val MULTIPLY_SELECTOR = "multiply"
     }
+
+    private val theaterIdList: ArrayList<String> = arrayListOf()
+    private val theaterNameList: ArrayList<String> = arrayListOf()
 
     private fun addIntentFlags (intent: Intent) {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -77,16 +83,21 @@ class RouteNavigation @Inject constructor(
     }
 
     fun navigateBooking (
-        theaterId: String,
-        theaterName: ArrayList<String>
+        theaterList: List<TheaterItems>,
     ) {
         val intent = Intent(context, BookingActivity::class.java)
 
-        intent.putExtra("theaterId", theaterId)
-        intent.putStringArrayListExtra("theaterName", theaterName)
+        repeat(theaterList.size) {
+            theaterIdList.add(theaterList[it].theaterId)
+            theaterNameList.add(theaterList[it].name)
+        }
+
+        Timber.d("theater list id name $theaterIdList, $theaterNameList")
+
+        intent.putStringArrayListExtra("theaterName", theaterNameList)
         intent.putExtra("bookingType", bookingTypes)
         addIntentFlags(intent)
-
+//
         context.startActivity(intent)
     }
 
