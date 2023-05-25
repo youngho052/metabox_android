@@ -1,5 +1,6 @@
 package com.clone.metabox.view.booking
 
+import android.content.Intent
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -30,7 +31,9 @@ fun BookingHeader(
     theaterList: ArrayList<String>
 ) {
     Column {
-        CommonHeader(bookingType = bookingType)
+        CommonHeader(
+            bookingType = bookingType
+        )
         if(bookingType == "movie") {
             BookingMovieList()
         }

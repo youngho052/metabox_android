@@ -34,9 +34,6 @@ class TheaterSelectViewModel @Inject constructor(
     val theaterState: String
         get() = savedStateHandle.get<String>("theaterState") ?: ""
 
-    private val theaterMovieId: String
-        get() = savedStateHandle.get<String>("theaterMovieId") ?: ""
-
     val theaterList: SnapshotStateList<TheaterItems> = mutableStateListOf()
 
     val navigateToPage

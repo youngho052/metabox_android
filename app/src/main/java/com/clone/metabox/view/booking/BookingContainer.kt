@@ -1,5 +1,6 @@
 package com.clone.metabox.view.booking
 
+import android.content.Intent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -26,11 +27,11 @@ fun BookingContainer(
         stickyHeader {
             BookingHeader(
                 bookingType = bookingViewModel.bookingType,
-                theaterList = bookingViewModel.theaterName
+                theaterList = bookingViewModel.theaterNameList
             )
         }
 
-        items(count = bookingViewModel.theaterName.size){
+        items(count = bookingViewModel.theaterNameList.size){
             Column(
                 verticalArrangement = Arrangement.spacedBy(30.dp),
                 modifier = Modifier

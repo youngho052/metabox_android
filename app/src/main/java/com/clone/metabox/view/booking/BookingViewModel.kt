@@ -11,9 +11,11 @@ import javax.inject.Inject
 class BookingViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
-    val theaterName: ArrayList<String>
-        get() = checkNotNull(savedStateHandle.get<ArrayList<String>>("theaterName"))
-//        get() = savedStateHandle.get<ArrayList<String>>("theaterName")?: arrayListOf()
+    val theaterNameList: ArrayList<String>
+        get() = checkNotNull(savedStateHandle.get<ArrayList<String>>("theaterNameList"))
+
+    val theaterIdList: ArrayList<String>
+        get() = checkNotNull(savedStateHandle.get<ArrayList<String>>("theaterIdList"))
 
     val bookingType: String
         get() = savedStateHandle.get<String>("bookingType")?: ""
@@ -22,6 +24,6 @@ class BookingViewModel @Inject constructor(
 //        get() = savedStateHandle.getStateFlow("bookingType", "")
 
     init {
-        Timber.d("check theater name $theaterName")
+        Timber.d("check theater name $theaterNameList")
     }
 }

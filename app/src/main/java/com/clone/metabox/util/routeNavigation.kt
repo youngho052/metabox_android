@@ -63,7 +63,6 @@ class RouteNavigation @Inject constructor(
         val intent = Intent(context, TheaterSelectActivity::class.java)
         bookingTypes = bookingType
 
-        intent.putExtra("bookingType", bookingTypes)
         intent.putExtra("theaterState", MULTIPLY_SELECTOR)
         intent.putExtra("theaterMovieId", movieId)
         addIntentFlags(intent)
@@ -92,9 +91,8 @@ class RouteNavigation @Inject constructor(
             theaterNameList.add(theaterList[it].name)
         }
 
-        Timber.d("theater list id name $theaterIdList, $theaterNameList")
-
-        intent.putStringArrayListExtra("theaterName", theaterNameList)
+        intent.putStringArrayListExtra("theaterIdList", theaterIdList)
+        intent.putStringArrayListExtra("theaterNameList", theaterNameList)
         intent.putExtra("bookingType", bookingTypes)
         addIntentFlags(intent)
 //
