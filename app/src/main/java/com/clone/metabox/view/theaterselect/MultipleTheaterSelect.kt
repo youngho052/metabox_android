@@ -57,7 +57,7 @@ fun MultipleTheaterSelect(
         theaterList = theaterSelectViewModel.theaterList,
         navigateToBooking = {
             theaterList: List<TheaterItems> ->
-                theaterSelectViewModel.navigateToPage.navigateBooking(theaterList)
+                theaterSelectViewModel.navigateToPage.navigateToBooking(theaterList)
         }
     )
 }

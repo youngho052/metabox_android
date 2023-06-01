@@ -6,3 +6,4 @@ import androidx.annotation.Keep
 data class MovieDetailRequest(
     val movieId: String = ""
 )
+

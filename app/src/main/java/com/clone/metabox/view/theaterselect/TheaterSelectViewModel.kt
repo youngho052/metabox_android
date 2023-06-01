@@ -41,7 +41,7 @@ class TheaterSelectViewModel @Inject constructor(
 
     init {
         _theaterUiState.value = _theaterUiState.value.copy(
-            navigateToTheaterDetail = { theaterName -> routeNavigation.navigateTheaterDetail(theaterName) },
+            navigateToTheaterDetail = { theaterName -> routeNavigation.navigateToTheaterDetail(theaterName) },
         )
 
         getTheaterInformation()

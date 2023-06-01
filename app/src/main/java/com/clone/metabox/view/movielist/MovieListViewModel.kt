@@ -1,10 +1,12 @@
 package com.clone.metabox.view.movielist
 
+import androidx.annotation.Keep
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.clone.metabox.data.api.response.MovieListResponse
 import com.clone.metabox.domain.movie.GetMovieListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,18 +16,16 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.clone.metabox.result.Result
 import com.clone.metabox.util.RouteNavigation
-import timber.log.Timber
 
 @HiltViewModel
 class MovieListViewModel @Inject constructor(
     private val getMovieListUseCase: GetMovieListUseCase,
     private val savedStateHandle: SavedStateHandle,
-    private val routeNavigation: RouteNavigation
 ): ViewModel() {
-    private val _movieListUiState: MutableStateFlow<MovieListUiState> =
-        MutableStateFlow(MovieListUiState())
+    private val _movieListUiState: MutableStateFlow<MovieListViewState> =
+        MutableStateFlow(MovieListViewState())
 
-    val movieListUiState: StateFlow<MovieListUiState>
+    val movieListUiState: StateFlow<MovieListViewState>
         get() = _movieListUiState
 
     companion object {
@@ -41,8 +41,6 @@ class MovieListViewModel @Inject constructor(
     init {
         _movieListUiState.value = _movieListUiState.value.copy(
             loadMoreMovieList = { loadMoreMovieList() },
-            navigateToMovieDetail = { movieId -> routeNavigation.navigateMovieDetail(movieId) },
-            navigateToTheaterSelector = { movieId -> routeNavigation.navigateMultiTheaterSelector(movieId, "movie") }
         )
 
         getMovieList()
@@ -58,7 +56,7 @@ class MovieListViewModel @Inject constructor(
         }
     }
 
-    private fun loadMoreMovieList () = viewModelScope.launch {
+    fun loadMoreMovieList () = viewModelScope.launch {
         movieListOffset.value = movieListOffset.value + 24
 
         if(_movieListUiState.value.movieList.movies.isNotEmpty() &&
@@ -77,3 +75,9 @@ class MovieListViewModel @Inject constructor(
         }
     }
 }
+
+@Keep
+data class MovieListViewState (
+    val movieList: MovieListResponse = MovieListResponse(),
+    val loadMoreMovieList: () -> Unit = {},
+)

@@ -3,12 +3,10 @@ package com.clone.metabox.util
 import android.content.Context
 import android.content.Intent
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.toMutableStateList
 import androidx.navigation.NavController
 import com.clone.metabox.*
 import com.clone.metabox.data.api.response.TheaterItems
 import dagger.hilt.android.qualifiers.ApplicationContext
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -29,7 +27,7 @@ class RouteNavigation @Inject constructor(
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     }
 
-    fun navigateMovieList (listState: String) {
+    fun navigateToMovieList (listState: String) {
         val intent = Intent(context, MovieListActivity::class.java)
 
         intent.putExtra("movieNavToState", listState)
@@ -38,7 +36,7 @@ class RouteNavigation @Inject constructor(
         context.startActivity(intent)
     }
 
-    fun navigateMovieDetail (movieId: String) {
+    fun navigateToMovieDetail (movieId: String) {
         val intent = Intent(context, MovieDetailActivity::class.java)
 
         intent.putExtra("movieId", movieId)
@@ -47,7 +45,7 @@ class RouteNavigation @Inject constructor(
         context.startActivity(intent)
     }
 
-    fun navigateSingleTheaterSelector () {
+    fun navigateToSingleTheaterSelector () {
         val intent = Intent(context, TheaterSelectActivity::class.java)
 
         intent.putExtra("theaterState", SINGLE_SELECTOR)
@@ -56,7 +54,7 @@ class RouteNavigation @Inject constructor(
         context.startActivity(intent)
     }
 
-    fun navigateMultiTheaterSelector (
+    fun navigateToMultiTheaterSelector (
         movieId: String?,
         bookingType: String,
     ) {
@@ -70,7 +68,7 @@ class RouteNavigation @Inject constructor(
         context.startActivity(intent)
     }
 
-    fun navigateTheaterDetail (
+    fun navigateToTheaterDetail (
         theaterId: String,
     ) {
         val intent = Intent(context, TheaterActivity::class.java)
@@ -81,7 +79,7 @@ class RouteNavigation @Inject constructor(
         context.startActivity(intent)
     }
 
-    fun navigateBooking (
+    fun navigateToBooking (
         theaterList: List<TheaterItems>,
     ) {
         val intent = Intent(context, BookingActivity::class.java)

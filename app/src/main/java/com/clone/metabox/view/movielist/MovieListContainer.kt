@@ -24,6 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.clone.metabox.data.api.response.Movies
 import com.clone.metabox.ui.theme.Gray
 import com.clone.metabox.ui.theme.LightBlue
@@ -33,6 +34,7 @@ import com.clone.metabox.view.common.HorizontalLineView
 import com.clone.metabox.view.common.IconView
 import com.skydoves.landscapist.glide.GlideImage
 import com.clone.metabox.R
+import com.clone.metabox.util.RouteNavigation
 import com.clone.metabox.util.onClick
 import com.clone.metabox.view.common.AgeRestrictionBox
 import com.skydoves.landscapist.ImageOptions
@@ -41,20 +43,22 @@ import timber.log.Timber
 
 @Composable
 fun MovieListContainer(
-    movieListViewModel: MovieListViewModel
+    movieListViewModel: MovieListViewModel = viewModel(),
+    routeNavigation: RouteNavigation,
 ) {
     val movieListUiState = movieListViewModel.movieListUiState.collectAsState()
 
     when(movieListViewModel.movieNavToState) {
-        "movieDetail" -> MovieDetailListContainer(movieListUiState)
-        "movieBooking" -> MovieBookingListContainer(movieListUiState)
+        "movieDetail" -> MovieDetailListContainer(movieListUiState, routeNavigation)
+        "movieBooking" -> MovieBookingListContainer(movieListUiState, routeNavigation)
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun MovieDetailListContainer (
-    movieListUiState: State<MovieListUiState>
+    movieListUiState: State<MovieListViewState>,
+    routeNavigation: RouteNavigation
 ) {
     val listState = rememberLazyListState()
 
@@ -76,7 +80,7 @@ private fun MovieDetailListContainer (
                 MovieListView(
                     movies = movieListUiState.value.movieList.movies[it],
                     rank = it + 1,
-                    navigateToMovieDetail = { movieId -> movieListUiState.value.navigateToMovieDetail(movieId) }
+                    navigateToMovieDetail = { movieId -> routeNavigation.navigateToMovieDetail(movieId) }
                 )
                 HorizontalLineView(color = MaterialTheme.colors.Gray)
             }
@@ -92,7 +96,8 @@ private fun MovieDetailListContainer (
 
 @Composable
 private fun MovieBookingListContainer (
-    movieListUiState: State<MovieListUiState>
+    movieListUiState: State<MovieListViewState>,
+    routeNavigation: RouteNavigation
 ) {
     val context = LocalContext.current as ComponentActivity
 
@@ -142,7 +147,10 @@ private fun MovieBookingListContainer (
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
                         .onClick {
-                            movieListUiState.value.navigateToTheaterSelector(movieListUiState.value.movieList.movies[it].movieId)
+                            routeNavigation.navigateToMultiTheaterSelector(
+                                movieId = movieListUiState.value.movieList.movies[it].movieId,
+                                bookingType = "movie"
+                            )
                         }
                 ) {
                     Box(

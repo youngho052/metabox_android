@@ -3,6 +3,7 @@ package com.clone.metabox.view.main
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.clone.metabox.data.api.response.MainPageResponse
 import com.clone.metabox.domain.auth.KakaoLoginUseCase
 import com.clone.metabox.domain.main.GetMainPageUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,18 +20,19 @@ class MainViewModel @Inject constructor(
     private val getMainPageUseCase: GetMainPageUseCase,
     private val kakaoLoginUseCase: KakaoLoginUseCase,
 ): ViewModel() {
-    private val _mainUiState: MutableStateFlow<MainUiState> =
-        MutableStateFlow(MainUiState())
-    val mainUiState: StateFlow<MainUiState>
+    private val _mainUiState: MutableStateFlow<MainViewState> =
+        MutableStateFlow(MainViewState())
+    val mainUiState: StateFlow<MainViewState>
         get() = _mainUiState
 
-    val mainPageState = mutableStateOf<String>(MainPageNavGraph.home)
+    val mainPageState = mutableStateOf(MainPageNavGraph.home)
 
     init {
         getMainPageInformation()
     }
 
-    val result = viewModelScope.launch {
+    // api init 하지 않고 적용 가능함
+    private val getMainPageInformation = viewModelScope.launch {
         getMainPageUseCase(Unit).collectLatest {
             if(it is Result.Success) {
                 _mainUiState.value = _mainUiState.value.copy(
@@ -56,3 +58,8 @@ class MainViewModel @Inject constructor(
         }
     }
 }
+
+data class MainViewState(
+    val mainPageInformation: MainPageResponse = MainPageResponse(),
+    val mainPageState: String = MainPageNavGraph.home,
+)

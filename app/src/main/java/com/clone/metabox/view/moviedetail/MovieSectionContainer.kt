@@ -303,8 +303,8 @@ private fun MovieReviews () {
 
         Text(
             text = """
-                관람일 기준 7일 이내 등록 시 50P 가 적립됩니다.
-                포인트는 관람평 최대 10편 지급 가능합니다
+                관람일 기준 7일 이내 등록 시 50P 가 적립됩니다. 
+                포인트는 관람평 최대 10편 지급 가능합니다 
             """.trimIndent(),
             textAlign = TextAlign.Center,
             fontSize = 13.sp,

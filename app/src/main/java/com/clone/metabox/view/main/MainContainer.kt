@@ -1,6 +1,5 @@
 package com.clone.metabox.view.main
 
-import android.webkit.WebViewClient
 import androidx.compose.foundation.background
 import androidx.compose.foundation.*
 import androidx.compose.foundation.border
@@ -18,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -44,8 +42,10 @@ fun MainContainer (
     routeNavigation: RouteNavigation
 ) {
     val mainUiState = mainViewModel.mainUiState.collectAsState()
-    val context = LocalContext.current
-    val webViewClient = WebViewClient()
+
+//    webView Example
+//    val context = LocalContext.current
+//    val webViewClient = WebViewClient()
 
 //    AndroidView(
 //        factory = {
@@ -56,7 +56,6 @@ fun MainContainer (
 //        },
 //        modifier = Modifier.fillMaxSize()
 //    )
-
 
     LazyColumn(
         modifier = Modifier
@@ -70,14 +69,6 @@ fun MainContainer (
         }
 
         item {
-//            Text(
-//                text = "kakao login",
-//                modifier =
-//                    Modifier
-//                        .size(50.dp)
-//                        .border(1.dp, Color.Red)
-//                        .clickable { mainViewModel.kakaoLoginHandle() }
-//            )
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -93,20 +84,20 @@ fun MainContainer (
                 BoxOfficeMovieContainer(
                     boxOffice = mainUiState.value.mainPageInformation.boxOffice,
                     navigateToMovieList = {
-                        routeNavigation.navigateMovieList(MovieListNavState.movieDetail)
+                        routeNavigation.navigateToMovieList(MovieListNavState.movieDetail)
                     },
                     navigateToMovieDetail = { movieId: String ->
-                        routeNavigation.navigateMovieDetail(movieId)
+                        routeNavigation.navigateToMovieDetail(movieId)
                     },
                     navigateToMultiTheaterSelector = { movieId: String, bookingType: String ->
-                        routeNavigation.navigateMultiTheaterSelector(movieId, bookingType)
+                        routeNavigation.navigateToMultiTheaterSelector(movieId, bookingType)
                     }
                 )
 
-                MovieFeedContainer(
+                RecommendMovieContainer(
                     recommendMovie = mainUiState.value.mainPageInformation.recommandMovie,
                     navigateMovieDetail = { movieId: String ->
-                        routeNavigation.navigateMovieDetail(movieId)
+                        routeNavigation.navigateToMovieDetail(movieId)
                     }
                 )
             }
@@ -259,7 +250,7 @@ private fun BoxOfficeMovieContainer (
 }
 
 @Composable
-private fun MovieFeedContainer (
+private fun RecommendMovieContainer (
     recommendMovie: RecommendMovie,
     navigateMovieDetail: (String) -> Unit
 ) {
