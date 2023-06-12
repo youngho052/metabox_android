@@ -31,16 +31,18 @@ class MainViewModel @Inject constructor(
         getMainPageInformation()
     }
 
-    // api init 하지 않고 적용 가능함
-    private val getMainPageInformation = viewModelScope.launch {
-        getMainPageUseCase(Unit).collectLatest {
-            if(it is Result.Success) {
-                _mainUiState.value = _mainUiState.value.copy(
-                    mainPageInformation = it.data
-                )
-            }
-        }
-    }
+    // api init 하지 않고 람다 함수 또는 바로 적용 가능함
+//    private val getMainPageInformation = run {
+//        viewModelScope.launch {
+//            getMainPageUseCase(Unit).collectLatest {
+//                if (it is Result.Success) {
+//                    _mainUiState.value = _mainUiState.value.copy(
+//                        mainPageInformation = it.data
+//                    )
+//                }
+//            }
+//        }
+//    }
 
     private fun getMainPageInformation() = viewModelScope.launch {
         getMainPageUseCase(Unit).collectLatest {
@@ -49,12 +51,6 @@ class MainViewModel @Inject constructor(
                     mainPageInformation = it.data
                 )
             }
-        }
-    }
-
-    fun kakaoLoginHandle () = viewModelScope.launch {
-        kakaoLoginUseCase(Unit).collectLatest {
-            Timber.d("kakao Login test $it")
         }
     }
 }
