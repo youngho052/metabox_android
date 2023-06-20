@@ -51,6 +51,7 @@ class MovieListViewModel @Inject constructor(
             if(it is Result.Success) {
                 _movieListUiState.value = _movieListUiState.value.copy(
                     movieList = it.data
+
                 )
             }
         }
