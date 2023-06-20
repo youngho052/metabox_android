@@ -2,7 +2,7 @@
 
 ## Technologies 
 
-* Android JetPack Compose
+* Android JetPack Compose
 
 * Kotlin 
 
