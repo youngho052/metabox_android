@@ -34,6 +34,7 @@ import com.clone.metabox.view.common.IconView
 import com.clone.metabox.view.movielist.MovieListNavState
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
+import timber.log.Timber
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -42,7 +43,6 @@ fun MainContainer (
     routeNavigation: RouteNavigation
 ) {
     val mainUiState = mainViewModel.mainUiState.collectAsState()
-
 //    webView Example
 //    val context = LocalContext.current
 //    val webViewClient = WebViewClient()
