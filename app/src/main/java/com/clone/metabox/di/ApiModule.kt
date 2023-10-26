@@ -26,6 +26,13 @@ import javax.inject.Singleton
 object ApiModule {
     @Provides
     @Singleton
+    fun provideGoodsListService(
+        retrofit: Retrofit
+    ): GoodsListService {
+        return retrofit.create(GoodsListService::class.java)
+    }
+    @Provides
+    @Singleton
     fun provideMainPageService(
         retrofit: Retrofit
     ): MainPageService {

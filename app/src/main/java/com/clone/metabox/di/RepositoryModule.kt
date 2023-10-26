@@ -3,7 +3,9 @@ package com.clone.metabox.di
 import com.clone.metabox.data.api.*
 import com.clone.metabox.data.auth.DefaultKaKaoLoginRepository
 import com.clone.metabox.data.auth.KakaoLoginRepository
+import com.clone.metabox.data.main.DefaultGoodsListRepository
 import com.clone.metabox.data.main.DefaultMainPageRepository
+import com.clone.metabox.data.main.GoodsListRepository
 import com.clone.metabox.data.main.MainPageRepository
 import com.clone.metabox.data.movie.DefaultMovieDetailRepository
 import com.clone.metabox.data.movie.DefaultMovieListRepository
@@ -22,6 +24,15 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 object RepositoryModule {
+    @Provides
+    @Singleton
+    fun goodsListRepository (
+        service: GoodsListService
+    ): GoodsListRepository {
+        return DefaultGoodsListRepository(
+            service
+        )
+    }
     @Provides
     @Singleton
     fun mainPageRepository (
