@@ -36,7 +36,6 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val mainUiState = mainViewModel.mainUiState.collectAsState()
 
-                // test
                 NavHost(
                     navController = navController,
                     startDestination = Screen.Splash.route
