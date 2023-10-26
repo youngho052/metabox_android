@@ -12,6 +12,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.clone.metabox.R
+import com.clone.metabox.navigation.NavGraph
+import com.clone.metabox.navigation.Screen
 import com.clone.metabox.ui.theme.LightBlue
 import com.clone.metabox.view.common.IconTextView
 
@@ -39,8 +41,8 @@ fun MainFooter (
             IconTextView(
                 imagePainter = painterResource(id = R.drawable.icon_home_black),
                 category = "홈",
-                tint = if(pageState == MainPageNavGraph.home) MaterialTheme.colors.LightBlue else Color.Unspecified,
-                fontColor = if(pageState == MainPageNavGraph.home) MaterialTheme.colors.LightBlue else Color.Black,
+                tint = if(pageState == Screen.Home.route) MaterialTheme.colors.LightBlue else Color.Unspecified,
+                fontColor = if(pageState == Screen.Home.route) MaterialTheme.colors.LightBlue else Color.Black,
                 modifier = Modifier.clickable {
                     navigateToHome()
                 }
@@ -62,8 +64,8 @@ fun MainFooter (
             IconTextView(
                 imagePainter = painterResource(id = R.drawable.icon_calendar_black),
                 category = "예매",
-                tint = if(pageState == MainPageNavGraph.booking) MaterialTheme.colors.LightBlue else Color.Unspecified,
-                fontColor = if(pageState == MainPageNavGraph.booking) MaterialTheme.colors.LightBlue else Color.Black,
+                tint = if(pageState == Screen.Booking.route) MaterialTheme.colors.LightBlue else Color.Unspecified,
+                fontColor = if(pageState == Screen.Booking.route) MaterialTheme.colors.LightBlue else Color.Black,
                 modifier = Modifier.clickable {
                     navigateToBooking()
                 }

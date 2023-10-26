@@ -46,6 +46,13 @@ fun MainContainer (
     routeNavigation: RouteNavigation
 ) {
     val mainUiState = mainViewModel.mainUiState.collectAsState()
+    val intArray: IntArray = intArrayOf()
+    val b:MutableMap<Int, List<String>> = mutableMapOf()
+    val my_string = "dadsadasda"
+    my_string.lastIndexOf("s")
+    var a: MutableList<String> = my_string.split("").toMutableList()
+    a.toMutableList().removeAt(1)
+    a[10]= "ad"
 //    webView Example
 //    val context = LocalContext.current
 //    val webViewClient = WebViewClient()
